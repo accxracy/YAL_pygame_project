@@ -13,7 +13,7 @@ def init():
     clock = pygame.time.Clock()
 
     while running:
-        screen.fill(pygame.Color('black'))
+        screen.fill(pygame.Color(0, 128, 0))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
