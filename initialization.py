@@ -1,5 +1,6 @@
 import pygame, sys, os
 from main_menu_buttons import Button
+from card import load_deck
 
 pygame.init()
 
@@ -27,7 +28,11 @@ def load_image(name, colorkey=None):
 
 
 def play():
-    while True:
+    fps = 5
+    clock = pygame.time.Clock()
+    running = True
+
+    while running:
         PLAY_MOUSE_POS = pygame.mouse.get_pos()
 
         SCREEN.fill(BG)
@@ -37,28 +42,24 @@ def play():
         SCREEN.blit(PLAY_TEXT, PLAY_RECT)
 
         PLAY_BACK = Button(image=None, pos=(640, 460),
-                           text_input="BACK", font=pygame.font.Font(None, 36), base_color="White", hovering_color="Green")
+                           text_input="BACK", font=pygame.font.Font(None, 36),
+                           base_color="White", hovering_color="Green")
 
         PLAY_BACK.changeColor(PLAY_MOUSE_POS)
         PLAY_BACK.update(SCREEN)
 
-        image1 = load_image('cards/cards_set_1/back.png')
-        image2 = load_image('cards/cards_set_1/0_2 (1).png')
-        SCREEN.blit(image1, (10, 10))
-        
-
-
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if PLAY_BACK.checkForInput(PLAY_MOUSE_POS):
                     main_menu()
-            if event.type == pygame.MOUSEMOTION:
-                SCREEN.blit(image2, (10, 10))
+            for elem in load_deck():
+                SCREEN.blit(elem, (100, 100))
 
         pygame.display.update()
+        clock.tick(fps)
 
 
 def options():
