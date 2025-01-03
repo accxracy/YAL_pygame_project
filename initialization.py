@@ -42,8 +42,9 @@ def play():
         PLAY_BACK.changeColor(PLAY_MOUSE_POS)
         PLAY_BACK.update(SCREEN)
 
-        image = load_image('cards/cards_set_1/0_2.png')
-        SCREEN.blit(image, (10, 10))
+        image1 = load_image('cards/cards_set_1/back1 (1).jpg')
+        image2 = load_image('cards/cards_set_1/0_2 (1).png')
+        SCREEN.blit(image1, (10, 10))
         
 
 
@@ -54,6 +55,8 @@ def play():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if PLAY_BACK.checkForInput(PLAY_MOUSE_POS):
                     main_menu()
+            if event.type == pygame.MOUSEMOTION:
+                SCREEN.blit(image2, (10, 10))
 
         pygame.display.update()
 
