@@ -1,5 +1,6 @@
 import pygame, sys, os
 from main_menu_buttons import Button
+from card import load_deck
 
 pygame.init()
 WIDTH, HEIGHT = 1280, 720
@@ -97,6 +98,8 @@ def settings_menu():
 def game():
     back_button = Button((1000, 360), 250, 100, "Назад", font, "data/buttons/quit_button.png","data/buttons/quit_button_hover.png", "data/sounds/click.mp3")
     running = True
+    fps = 10
+    clock = pygame.time.Clock()
     while running:
         SCREEN.fill((0, 0, 0))
         SCREEN.blit(BG_game, (0, 0))
@@ -113,14 +116,16 @@ def game():
 
             if event.type == pygame.USEREVENT and event.button == back_button:
                 running = False
-
             back_button.han_event(event)
+            for elem in load_deck():
+                SCREEN.blit(elem, (10, 10))
+
         for btn in [back_button]:
             btn.checking_hover(pygame.mouse.get_pos())
             btn.draw(SCREEN)
 
-
         pygame.display.flip()
+        clock.tick(fps)
 
 
 
