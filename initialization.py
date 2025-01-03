@@ -134,9 +134,7 @@ def game():
                 if event.key == pygame.K_ESCAPE:
                     running = False
                 if event.key == pygame.K_SPACE:
-                    print(index)
-                    print(load_deck()[index])
-                    index += 1
+                    index = (index + 1) % 104
                 # if event.key == pygame.K_q:
                 #     Card.change_flag(self=Card)
             if event.type == pygame.USEREVENT and event.button == back_button:
