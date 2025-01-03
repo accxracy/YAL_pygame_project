@@ -7,6 +7,7 @@ pygame.init()
 WIDTH, HEIGHT = 1280, 720
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Блеф")
+deck = load_deck()
 
 
 def load_image(name, colorkey=None):
@@ -25,6 +26,12 @@ def load_image(name, colorkey=None):
         image = image.convert_alpha()
     return image
 
+all_sprites = pygame.sprite.Group()
+sprite = pygame.sprite.Sprite()
+sprite.image = load_image("arrow.png")
+sprite.rect = sprite.image.get_rect()
+all_sprites.add(sprite)
+pygame.mouse.set_visible(False)
 
 BG_menu = pygame.image.load("data/BG/BG_menu.jpg")
 BG_game = pygame.image.load("data/BG/BG_game.jpg")
@@ -32,6 +39,7 @@ font = pygame.font.Font('data/fonts/Verdana.ttf', 24)
 
 
 def main_menu():
+    flag = True
     settings_button = Button((100, 360), 250, 100, "Настройки", font,
                              "data/buttons/option_button.png",
                              "data/buttons/option_button_hover.png",
@@ -54,6 +62,11 @@ def main_menu():
                 pygame.quit()
                 sys.exit()
 
+            if event.type == pygame.MOUSEMOTION:
+                coords = event.pos
+                flag = pygame.mouse.get_focused()
+                sprite.rect.x, sprite.rect.y = coords
+
             if event.type == pygame.USEREVENT and event.button == play_button:
                 game()
 
@@ -72,10 +85,14 @@ def main_menu():
             btn.checking_hover(pygame.mouse.get_pos())
             btn.draw(SCREEN)
 
+        if flag:
+            all_sprites.draw(SCREEN)
+
         pygame.display.flip()
 
 
 def settings_menu():
+    flag = True
     # deck1 = load_image('cards/full_1.png')
     # deck2 = load_image('cards/full_2.png')
     back_button = Button((1000, 360), 250, 100, "Назад", font,
@@ -106,6 +123,11 @@ def settings_menu():
                 pygame.quit()
                 sys.exit()
 
+            if event.type == pygame.MOUSEMOTION:
+                coords = event.pos
+                flag = pygame.mouse.get_focused()
+                sprite.rect.x, sprite.rect.y = coords
+
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     running = False
@@ -119,19 +141,22 @@ def settings_menu():
         for btn in [back_button, deck1_button, deck2_button]:
             btn.checking_hover(pygame.mouse.get_pos())
             btn.draw(SCREEN)
+
+        if flag:
+            all_sprites.draw(SCREEN)
         pygame.display.flip()
 
 
 def game():
     index = 0
-
+    flag = True
     back_button = Button((1000, 360), 250, 100, "Назад", font,
                          "data/buttons/quit_button.png",
                          "data/buttons/quit_button_hover.png",
                          "data/sounds/click.mp3")
     running = True
-    fps = 10
-    clock = pygame.time.Clock()
+    # fps = 60
+    # clock = pygame.time.Clock()
     while running:
         SCREEN.fill((0, 0, 0))
         SCREEN.blit(BG_game, (0, 0))
@@ -142,20 +167,26 @@ def game():
                 pygame.quit()
                 sys.exit()
 
+            if event.type == pygame.MOUSEMOTION:
+                coords = event.pos
+                flag = pygame.mouse.get_focused()
+                sprite.rect.x, sprite.rect.y = coords
+
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     running = False
                 if event.key == pygame.K_SPACE:
                     index = (index + 1) % 104
-                # if event.key == pygame.K_q:
-                #     Card.change_flag(self=Card)
+
             if event.type == pygame.USEREVENT and event.button == back_button:
                 running = False
             back_button.han_event(event)
         for btn in [back_button]:
             btn.checking_hover(pygame.mouse.get_pos())
             btn.draw(SCREEN)
-        SCREEN.blit(load_deck()[index], (10, 10))
 
+        SCREEN.blit(deck[index], (10, 10))
+        if flag:
+            all_sprites.draw(SCREEN)
         pygame.display.flip()
-        clock.tick(fps)
+        # clock.tick(fps)
