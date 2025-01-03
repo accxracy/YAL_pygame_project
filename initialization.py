@@ -114,16 +114,11 @@ def settings_menu():
 
                 running = False
 
-            back_button.han_event(event)
-            deck1_button.han_event(event)
-            deck2_button.han_event(event)
-        back_button.checking_hover(pygame.mouse.get_pos())
-        back_button.draw(SCREEN)
-        deck1_button.checking_hover(pygame.mouse.get_pos())
-        deck1_button.draw(SCREEN)
-        deck2_button.checking_hover(pygame.mouse.get_pos())
-        deck2_button.draw(SCREEN)
-
+            for btn in [back_button, deck1_button, deck2_button]:
+                btn.han_event(event)
+        for btn in [back_button, deck1_button, deck2_button]:
+            btn.checking_hover(pygame.mouse.get_pos())
+            btn.draw(SCREEN)
         pygame.display.flip()
 
 
@@ -164,7 +159,3 @@ def game():
 
         pygame.display.flip()
         clock.tick(fps)
-
-
-
-
