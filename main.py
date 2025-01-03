@@ -1,6 +1,5 @@
-import pygame
-from initialization import init
-
+import pygame, sys
+from initialization import main_menu, options, play
 
 if __name__ == '__main__':
-    init()
+    main_menu()
