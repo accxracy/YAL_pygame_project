@@ -26,6 +26,7 @@ def load_image(name, colorkey=None):
         image = image.convert_alpha()
     return image
 
+
 all_sprites = pygame.sprite.Group()
 sprite = pygame.sprite.Sprite()
 sprite.image = load_image("arrow.png")
