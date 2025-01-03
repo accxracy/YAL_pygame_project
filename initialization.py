@@ -82,14 +82,14 @@ def settings_menu():
                          "data/buttons/quit_button.png",
                          "data/buttons/quit_button_hover.png",
                          "data/sounds/click.mp3")
-    deck1_button = Button((10, 10), 500, 200, None, font,
-                         "data/cards/full_1.png",
-                         "data/cards/full_1.png",
-                         "data/sounds/click.mp3")
-    deck2_button = Button((10, 360), 500, 200, None, font,
-                         "data/cards/full_2.png",
-                         "data/cards/full_2.png",
-                         "data/sounds/click.mp3")
+    deck1_button = Button((10, 10), 300, 225, None, font,
+                          "data/cards/cards_set_1/full_1.png",
+                          "data/cards/cards_set_1/full_1.png",
+                          "data/sounds/click.mp3")
+    deck2_button = Button((10, 360), 300, 225, None, font,
+                          "data/cards/cards_set_2/full_2.png",
+                          "data/cards/cards_set_2/full_2.png",
+                          "data/sounds/click.mp3")
     running = True
     while running:
         SCREEN.fill((0, 0, 0))
