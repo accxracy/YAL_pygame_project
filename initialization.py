@@ -42,7 +42,7 @@ def play():
         PLAY_BACK.changeColor(PLAY_MOUSE_POS)
         PLAY_BACK.update(SCREEN)
 
-        image1 = load_image('cards/cards_set_1/back1 (1).jpg')
+        image1 = load_image('cards/cards_set_1/back.png')
         image2 = load_image('cards/cards_set_1/0_2 (1).png')
         SCREEN.blit(image1, (10, 10))
         
