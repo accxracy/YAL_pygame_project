@@ -4,7 +4,7 @@ import pygame
 def init():
     pygame.init()
     pygame.display.set_caption('Верю-не-верю')
-    size = width, height = 800, 400
+    size = width, height = 1000, 600
     screen = pygame.display.set_mode(size)
 
     running = True
