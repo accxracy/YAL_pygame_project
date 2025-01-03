@@ -76,14 +76,25 @@ def main_menu():
 
 
 def settings_menu():
+    # deck1 = load_image('cards/full_1.png')
+    # deck2 = load_image('cards/full_2.png')
     back_button = Button((1000, 360), 250, 100, "Назад", font,
                          "data/buttons/quit_button.png",
                          "data/buttons/quit_button_hover.png",
+                         "data/sounds/click.mp3")
+    deck1_button = Button((10, 10), 500, 200, None, font,
+                         "data/cards/full_1.png",
+                         "data/cards/full_1.png",
+                         "data/sounds/click.mp3")
+    deck2_button = Button((10, 360), 500, 200, None, font,
+                         "data/cards/full_2.png",
+                         "data/cards/full_2.png",
                          "data/sounds/click.mp3")
     running = True
     while running:
         SCREEN.fill((0, 0, 0))
         SCREEN.blit(BG_menu, (0, 0))
+
 
         text_surface = font.render("Настройки", True, (255, 255, 255))
         text_rect = text_surface.get_rect(center=(WIDTH / 2, 100))
@@ -104,8 +115,14 @@ def settings_menu():
                 running = False
 
             back_button.han_event(event)
+            deck1_button.han_event(event)
+            deck2_button.han_event(event)
         back_button.checking_hover(pygame.mouse.get_pos())
         back_button.draw(SCREEN)
+        deck1_button.checking_hover(pygame.mouse.get_pos())
+        deck1_button.draw(SCREEN)
+        deck2_button.checking_hover(pygame.mouse.get_pos())
+        deck2_button.draw(SCREEN)
 
         pygame.display.flip()
 
