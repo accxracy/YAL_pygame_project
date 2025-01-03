@@ -2,11 +2,9 @@ import pygame, sys, os
 from main_menu_buttons import Button
 
 pygame.init()
-
-SCREEN = pygame.display.set_mode((1280, 720))
+WIDTH, HEIGHT = 1280, 720
+SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Блеф")
-
-BG = pygame.Color(0, 128, 0)
 
 def load_image(name, colorkey=None):
     fullname = os.path.join('data', name)
@@ -15,7 +13,6 @@ def load_image(name, colorkey=None):
         print(f"Файл с изображением '{fullname}' не найден")
         sys.exit()
     image = pygame.image.load(fullname)
-
     if colorkey is not None:
         image = image.convert()
         if colorkey == -1:
@@ -25,99 +22,105 @@ def load_image(name, colorkey=None):
         image = image.convert_alpha()
     return image
 
-
-def play():
-    while True:
-        PLAY_MOUSE_POS = pygame.mouse.get_pos()
-
-        SCREEN.fill(BG)
-
-        PLAY_TEXT = pygame.font.Font(None, 36).render("Играть", True, "White")
-        PLAY_RECT = PLAY_TEXT.get_rect(center=(640, 260))
-        SCREEN.blit(PLAY_TEXT, PLAY_RECT)
-
-        PLAY_BACK = Button(image=None, pos=(640, 460),
-                           text_input="BACK", font=pygame.font.Font(None, 36), base_color="White", hovering_color="Green")
-
-        PLAY_BACK.changeColor(PLAY_MOUSE_POS)
-        PLAY_BACK.update(SCREEN)
-
-        image = load_image('cards/cards_set_1/0_2.png')
-        SCREEN.blit(image, (10, 10))
-        
-
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if PLAY_BACK.checkForInput(PLAY_MOUSE_POS):
-                    main_menu()
-
-        pygame.display.update()
-
-
-def options():
-    while True:
-        OPTIONS_MOUSE_POS = pygame.mouse.get_pos()
-
-        SCREEN.fill(BG)
-
-        OPTIONS_TEXT = pygame.font.Font(None, 36).render("Настройки", True, "Black")
-        OPTIONS_RECT = OPTIONS_TEXT.get_rect(center=(640, 260))
-        SCREEN.blit(OPTIONS_TEXT, OPTIONS_RECT)
-
-        OPTIONS_BACK = Button(image=None, pos=(640, 460),
-                              text_input="Назад", font=pygame.font.Font(None, 36), base_color="White", hovering_color="Green")
-
-        OPTIONS_BACK.changeColor(OPTIONS_MOUSE_POS)
-        OPTIONS_BACK.update(SCREEN)
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if OPTIONS_BACK.checkForInput(OPTIONS_MOUSE_POS):
-                    main_menu()
-
-        pygame.display.update()
-
+BG_menu = pygame.image.load("data/BG/BG_menu.jpg")
+BG_game = pygame.image.load("data/BG/BG_game.jpg")
+font = pygame.font.Font('data/fonts/Verdana.ttf', 24)
 
 def main_menu():
-    while True:
-        SCREEN.fill(BG)
-
-        MENU_MOUSE_POS = pygame.mouse.get_pos()
-
-        PLAY_BUTTON = Button(image=pygame.image.load("data/buttons/Play Rect.png"), pos=(640, 250),
-                             text_input="", font=pygame.font.Font(None, 36), base_color="#d7fcd4", hovering_color="White")
-        OPTIONS_BUTTON = Button(image=pygame.image.load("data/buttons/Options Rect.png"), pos=(640, 400),
-                                text_input="OPTIONS", font=pygame.font.Font(None, 36), base_color="#d7fcd4", hovering_color="White")
-        QUIT_BUTTON = Button(image=pygame.image.load("data/buttons/Quit Rect.png"), pos=(640, 550),
-                             text_input="QUIT", font=pygame.font.Font(None, 36), base_color="#d7fcd4", hovering_color="White")
-
-        for button in [PLAY_BUTTON, OPTIONS_BUTTON, QUIT_BUTTON]:
-            button.changeColor(MENU_MOUSE_POS)
-            button.update(SCREEN)
+    settings_button = Button((100, 360), 250, 100, "Настройки", font, "data/buttons/option_button.png",
+                        "data/buttons/option_button_hover.png", "data/sounds/click.mp3")
+    play_button = Button((640, 360), 250, 100, "Играть", font, "data/buttons/play_button.png","data/buttons/play_button_hover.png", "data/sounds/click.mp3")
+    quit_button = Button((1000, 360), 250, 100, "Выход", font, "data/buttons/quit_button.png","data/buttons/quit_button_hover.png", "data/sounds/click.mp3")
+    running = True
+    while running:
+        SCREEN.blit(BG_menu, (0, 0))
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                running = False
                 pygame.quit()
                 sys.exit()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
-                    play()
-                if OPTIONS_BUTTON.checkForInput(MENU_MOUSE_POS):
-                    options()
-                if QUIT_BUTTON.checkForInput(MENU_MOUSE_POS):
-                    pygame.quit()
-                    sys.exit()
 
-        pygame.display.update()
+            if event.type == pygame.USEREVENT and event.button == play_button:
+                game()
+
+            if event.type == pygame.USEREVENT and event.button == settings_button:
+                settings_menu()
+
+            if event.type == pygame.USEREVENT and event.button == quit_button:
+                running = False
+                pygame.quit()
+                sys.exit()
+
+            for btn in [play_button, settings_button, quit_button]:
+                btn.han_event(event)
+
+        for btn in [play_button, settings_button, quit_button]:
+            btn.checking_hover(pygame.mouse.get_pos())
+            btn.draw(SCREEN)
+
+        pygame.display.flip()
 
 
+def settings_menu():
+    back_button = quit_button = Button((1000, 360), 250, 100, "Назад", font, "data/buttons/quit_button.png","data/buttons/quit_button_hover.png", "data/sounds/click.mp3")
+    running = True
+    while running:
+        SCREEN.fill((0, 0, 0))
+        SCREEN.blit(BG_menu, (0, 0))
+
+        text_surface = font.render("Настройки", True, (255, 255, 255))
+        text_rect = text_surface.get_rect(center=(WIDTH / 2, 100))
+        SCREEN.blit(text_surface, text_rect)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+                pygame.quit()
+                sys.exit()
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    running = False
+
+            if event.type == pygame.USEREVENT and event.button == back_button:
+
+                running = False
+
+            back_button.han_event(event)
+        back_button.checking_hover(pygame.mouse.get_pos())
+        back_button.draw(SCREEN)
+
+        pygame.display.flip()
+
+
+def game():
+    back_button = Button((1000, 360), 250, 100, "Назад", font, "data/buttons/quit_button.png","data/buttons/quit_button_hover.png", "data/sounds/click.mp3")
+    running = True
+    while running:
+        SCREEN.fill((0, 0, 0))
+        SCREEN.blit(BG_game, (0, 0))
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+                pygame.quit()
+                sys.exit()
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    running = False
+
+            if event.type == pygame.USEREVENT and event.button == back_button:
+                running = False
+
+            back_button.han_event(event)
+        for btn in [back_button]:
+            btn.checking_hover(pygame.mouse.get_pos())
+            btn.draw(SCREEN)
+
+
+        pygame.display.flip()
 
 
 

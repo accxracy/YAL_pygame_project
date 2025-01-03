@@ -1,29 +1,41 @@
+import pygame
+
 class Button():
-	def __init__(self, image, pos, text_input, font, base_color, hovering_color):
-		self.image = image
+	def __init__(self,pos, width, height, text, font, image, image_hover=None, sound=None):
+
+		self.font = font
 		self.x_pos = pos[0]
 		self.y_pos = pos[1]
-		self.font = font
-		self.base_color, self.hovering_color = base_color, hovering_color
-		self.text_input = text_input
-		self.text = self.font.render(self.text_input, True, self.base_color)
-		if self.image is None:
-			self.image = self.text
-		self.rect = self.image.get_rect(center=(self.x_pos, self.y_pos))
-		self.text_rect = self.text.get_rect(center=(self.x_pos, self.y_pos))
+		self.text = text
+		self.width = width
+		self.height = height
+		self.image = pygame.image.load(image)
+		self.image = pygame.transform.scale(self.image, (self.width, self.height))
+		self.hover_image = self.image
+		if image_hover:
+			self.hover_image = pygame.image.load(image_hover)
+			self.hover_image = pygame.transform.scale(self.hover_image, (self.width, self.height))
+		self.rect = self.image.get_rect(topleft=(self.x_pos, self.y_pos))
+		self.sound = sound
+		if sound:
+			self.sound = pygame.mixer.Sound(self.sound)
+		self.is_hovered = False
 
-	def update(self, screen):
-		if self.image is not None:
-			screen.blit(self.image, self.rect)
-		screen.blit(self.text, self.text_rect)
+	def draw(self, screen):
+		current_image = self.hover_image if self.is_hovered else self.image
+		screen.blit(current_image, self.rect.topleft)
 
-	def checkForInput(self, position):
-		if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
-			return True
-		return False
+		font = self.font
+		text_s = font.render(self.text, True, (255, 255, 255))
+		text_rect = text_s.get_rect(center=self.rect.center)
+		screen.blit(text_s, text_rect)
 
-	def changeColor(self, position):
-		if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
-			self.text = self.font.render(self.text_input, True, self.hovering_color)
-		else:
-			self.text = self.font.render(self.text_input, True, self.base_color)
+	def checking_hover(self, mouse_position):
+		self.is_hovered = self.rect.collidepoint(mouse_position)
+
+	def han_event(self, event):
+		if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and self.is_hovered:
+			if self.sound:
+				self.sound.play()
+			pygame.event.post(pygame.event.Event(pygame.USEREVENT, button=self))
+
