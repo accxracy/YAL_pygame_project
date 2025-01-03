@@ -22,13 +22,17 @@ def load_image(name, colorkey=None):
 class Card:
     def __init__(self, set_number, suit, rank):
         self.card = load_image(f'cards/cards_set_{set_number}/{suit}_{rank}.png')
-        self.flag = False
+        self.flag = True
+        self.set_number = set_number
 
     def get_card(self):
         if self.flag:
             return self.card
         else:
-            return load_image(f'cards/cards_set_{set_number}/{suit}_{rank}.png')
+            return load_image(f'cards/cards_set_{self.set_number}/back.png')
+
+    def change_flag(self):
+        self.flag = not self.flag
 
 
 def load_deck():
@@ -36,5 +40,7 @@ def load_deck():
     for i in range(1, 3):
         for j in range(4):
             for k in range(2, 15):
+                print(i, j, k)
                 deck.append(Card(i, j, k).get_card())
     return deck
+

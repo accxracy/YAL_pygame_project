@@ -1,11 +1,13 @@
 import pygame, sys, os
 from main_menu_buttons import Button
-from card import load_deck
+from card import load_deck, Card
+
 
 pygame.init()
 WIDTH, HEIGHT = 1280, 720
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Блеф")
+
 
 def load_image(name, colorkey=None):
     fullname = os.path.join('data', name)
@@ -23,15 +25,25 @@ def load_image(name, colorkey=None):
         image = image.convert_alpha()
     return image
 
+
 BG_menu = pygame.image.load("data/BG/BG_menu.jpg")
 BG_game = pygame.image.load("data/BG/BG_game.jpg")
 font = pygame.font.Font('data/fonts/Verdana.ttf', 24)
 
+
 def main_menu():
-    settings_button = Button((100, 360), 250, 100, "Настройки", font, "data/buttons/option_button.png",
-                        "data/buttons/option_button_hover.png", "data/sounds/click.mp3")
-    play_button = Button((640, 360), 250, 100, "Играть", font, "data/buttons/play_button.png","data/buttons/play_button_hover.png", "data/sounds/click.mp3")
-    quit_button = Button((1000, 360), 250, 100, "Выход", font, "data/buttons/quit_button.png","data/buttons/quit_button_hover.png", "data/sounds/click.mp3")
+    settings_button = Button((100, 360), 250, 100, "Настройки", font,
+                             "data/buttons/option_button.png",
+                             "data/buttons/option_button_hover.png",
+                             "data/sounds/click.mp3")
+    play_button = Button((640, 360), 250, 100, "Играть", font,
+                         "data/buttons/play_button.png",
+                         "data/buttons/play_button_hover.png",
+                         "data/sounds/click.mp3")
+    quit_button = Button((1000, 360), 250, 100, "Выход", font,
+                         "data/buttons/quit_button.png",
+                         "data/buttons/quit_button_hover.png",
+                         "data/sounds/click.mp3")
     running = True
     while running:
         SCREEN.blit(BG_menu, (0, 0))
@@ -64,7 +76,10 @@ def main_menu():
 
 
 def settings_menu():
-    back_button = quit_button = Button((1000, 360), 250, 100, "Назад", font, "data/buttons/quit_button.png","data/buttons/quit_button_hover.png", "data/sounds/click.mp3")
+    back_button = Button((1000, 360), 250, 100, "Назад", font,
+                         "data/buttons/quit_button.png",
+                         "data/buttons/quit_button_hover.png",
+                         "data/sounds/click.mp3")
     running = True
     while running:
         SCREEN.fill((0, 0, 0))
@@ -96,7 +111,12 @@ def settings_menu():
 
 
 def game():
-    back_button = Button((1000, 360), 250, 100, "Назад", font, "data/buttons/quit_button.png","data/buttons/quit_button_hover.png", "data/sounds/click.mp3")
+    index = 0
+
+    back_button = Button((1000, 360), 250, 100, "Назад", font,
+                         "data/buttons/quit_button.png",
+                         "data/buttons/quit_button_hover.png",
+                         "data/sounds/click.mp3")
     running = True
     fps = 10
     clock = pygame.time.Clock()
@@ -113,16 +133,19 @@ def game():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     running = False
-
+                if event.key == pygame.K_SPACE:
+                    print(index)
+                    print(load_deck()[index])
+                    index += 1
+                # if event.key == pygame.K_q:
+                #     Card.change_flag(self=Card)
             if event.type == pygame.USEREVENT and event.button == back_button:
                 running = False
             back_button.han_event(event)
-            for elem in load_deck():
-                SCREEN.blit(elem, (10, 10))
-
         for btn in [back_button]:
             btn.checking_hover(pygame.mouse.get_pos())
             btn.draw(SCREEN)
+        SCREEN.blit(load_deck()[index], (10, 10))
 
         pygame.display.flip()
         clock.tick(fps)
