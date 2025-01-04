@@ -1,6 +1,6 @@
 import pygame
 
-class Button():
+class Button:
 	def __init__(self,pos, width, height, text, font, image, image_hover=None, sound=None):
 
 		self.font = font
@@ -15,6 +15,7 @@ class Button():
 		if image_hover:
 			self.hover_image = pygame.image.load(image_hover)
 			self.hover_image = pygame.transform.scale(self.hover_image, (self.width, self.height))
+
 		self.rect = self.image.get_rect(topleft=(self.x_pos, self.y_pos))
 		self.sound = sound
 		if sound:
@@ -38,4 +39,6 @@ class Button():
 			if self.sound:
 				self.sound.play()
 			pygame.event.post(pygame.event.Event(pygame.USEREVENT, button=self))
+
+
 
