@@ -2,12 +2,11 @@ import random
 
 
 def create_deck():
-    # Колода состоит из 4 мастей и 13 карт каждой масти, плюс два джокера
+    """Создание колоды карт, включая два джокера"""
     deck = []
     suits = ['hearts', 'diamonds', 'clubs', 'spades']
     ranks = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
 
-    # Добавляем карты для каждой масти
     for suit in suits:
         for rank in ranks:
             deck.append(f"{rank} of {suit}")
@@ -16,12 +15,12 @@ def create_deck():
     deck.append('4 of 0')
     deck.append('4 of 1')
 
-    # Перемешиваем колоду
     random.shuffle(deck)
     return deck
 
 
 def deal_cards(deck, num_players):
+    """Распределение карт между игроками"""
     players = [[] for _ in range(num_players)]
     while deck:
         for i in range(num_players):
@@ -37,35 +36,19 @@ class Player:
         self.is_human = is_human
 
     def make_move(self, called_rank=None, first_turn=False):
-        """
-        Для человека: получение ввода и выбор действия.
-        Если это первый ход, игрок может выбрать ранг и количество карт.
-        """
+        """Определяет ход игрока. Для человека запрашивается ввод, для бота — выбирается случайно."""
         if self.is_human:
             return self.human_move(called_rank, first_turn)
         else:
             return self.bot_move(called_rank, first_turn)
 
     def human_move(self, called_rank, first_turn):
-        """
-        Для первого хода игрок сам выбирает ранг и количество карт.
-        В дальнейшем игрок может перевести, поверить или не поверить.
-        """
+        """Обработка хода для человека"""
         self.sort_hand()  # Сортировка карт перед выводом на экран
         print(f"\nYour hand: {self.display_hand()}")
 
         if first_turn:
-            # Если это первый ход, игрок может выбрать ранг и количество карт
-            print("\nIt's the first turn! Choose the rank and number of cards to play.")
-            called_rank = input("Enter the rank (2, 3, 4, ..., A): ").strip().upper()
-            while called_rank not in ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']:
-                print("Invalid rank! Please choose a valid rank.")
-                called_rank = input("Enter the rank (2, 3, 4, ..., A): ").strip().upper()
-            num_cards = int(input("How many cards of this rank do you want to play (1, 2, or 3)? "))
-            while num_cards not in [1, 2, 3]:
-                print("Invalid number of cards! Please choose between 1, 2, or 3.")
-                num_cards = int(input("How many cards of this rank do you want to play (1, 2, or 3)? "))
-            return ('start_turn', called_rank, num_cards)
+            return self.start_turn()  # Для первого хода — старт кона
         else:
             print(f"Called rank: {called_rank}")
             print("\nWhat do you want to do?")
@@ -91,10 +74,7 @@ class Player:
                 return self.human_move(called_rank, first_turn)
 
     def bot_move(self, called_rank, first_turn):
-        """
-        Для бота: случайный выбор действия.
-        Если это первый ход, бот может только перевести.
-        """
+        """Обработка хода для бота"""
         action = 'translate' if first_turn else random.choice(['translate', 'believe', 'dont_believe'])
         if action == 'translate':
             num_cards = random.randint(1, 3)
@@ -102,35 +82,71 @@ class Player:
         else:
             return (action, called_rank)
 
+    def start_turn(self):
+        """Начало хода — игрок выбирает карты и называет ранг"""
+        print("You are starting a new turn!")
+
+        # 1. Выбираем количество карт для выкидывания
+        num_cards = int(input("How many cards do you want to play (1, 2, or 3)? "))
+        while num_cards not in [1, 2, 3]:
+            print("Invalid number of cards! Please choose between 1, 2, or 3.")
+            num_cards = int(input("How many cards do you want to play (1, 2, or 3)? "))
+
+        # 2. Выбираем карты, которые будем выкидывать
+        selected_cards = self.select_cards(num_cards)
+
+        # 3. Проверка на наличие карт с выбранным рангом
+        chosen_rank = self.choose_rank(selected_cards)
+
+        # 4. Название рандомного ранга для этих карт
+        print(f"You selected {', '.join(selected_cards)}. You will say they are {chosen_rank}.")
+
+        return ('start_turn', selected_cards, chosen_rank)
+
+    def choose_rank(self, selected_cards):
+        """Выбираем ранг карт, которые хотим выкинуть"""
+        ranks_in_hand = set([card.split(' ')[0] for card in self.hand])  # Множество рангов в руке
+
+        # Смотрим, с каким рангом мы можем выкидывать выбранные карты
+        print(f"Chosen cards: {', '.join(selected_cards)}")
+        chosen_rank = input("Choose a rank for these cards (from your hand): ").strip().upper()
+
+        while chosen_rank not in ranks_in_hand:
+            print(f"You don't have any cards of rank {chosen_rank} in your hand. Choose another rank.")
+            chosen_rank = input("Choose a rank for these cards (from your hand): ").strip().upper()
+
+        return chosen_rank
+
     def select_cards(self, num_cards):
-        """
-        Выбирает случайные карты из руки для перевода.
-        """
+        """Позволяет игроку выбрать карты из своей руки"""
+        available_cards = [card for card in self.hand]
         selected_cards = []
-        available_cards = self.hand.copy()  # Чтобы не изменять оригинальную руку
-        for _ in range(num_cards):
-            card = random.choice(available_cards)
-            selected_cards.append(card)
-            available_cards.remove(card)
+
+        print("Available cards to select: ")
+        for idx, card in enumerate(available_cards, 1):
+            print(f"{idx}. {card}")
+
+        for i in range(num_cards):
+            card_idx = int(input(f"Select card {i + 1} (enter a number between 1 and {len(available_cards)}): "))
+            while card_idx < 1 or card_idx > len(available_cards):
+                print(f"Invalid choice. Please select a card between 1 and {len(available_cards)}.")
+                card_idx = int(input(f"Select card {i + 1} (enter a number between 1 and {len(available_cards)}): "))
+            selected_card = available_cards.pop(card_idx - 1)
+            selected_cards.append(selected_card)
+
         return selected_cards
 
     def has_rank(self, rank):
-        """
-        Проверяет, есть ли у игрока карты с данным рангом.
-        """
+        """Проверяет, есть ли у игрока карты с данным рангом"""
         return sum(1 for card in self.hand if rank in card) > 0
 
     def discard_cards(self, selected_cards):
-        """
-        Удаляет карты, которые были выкинуты.
-        """
+        """Удаляет карты, которые были выкинуты"""
         for card in selected_cards:
             self.hand.remove(card)
 
     def sort_hand(self):
-        """
-        Сортирует карты по рангу (от 2 до A), а также собирает их в словарь с количеством карт одного ранга.
-        """
+        """Сортирует карты по рангу и отображает их в упорядоченном виде"""
         rank_order = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
         rank_count = {rank: 0 for rank in rank_order}
 
@@ -148,34 +164,24 @@ class Player:
                 self.sorted_hand.append(f"{rank} x {rank_count[rank]}")
 
     def display_hand(self):
-        """
-        Показывает отсортированную руку игрока с количеством карт каждого ранга.
-        """
+        """Отображает отсортированную руку игрока с количеством карт каждого ранга"""
         return ', '.join(self.sorted_hand)
 
 
 def check_move(player, called_rank, move_type):
-    """
-    Проверка хода: игрок говорит правду или нет.
-    Если игрок врет, нужно убедиться, что он не обманывает с количеством карт.
-    """
+    """Проверка хода игрока"""
     if called_rank is None:
-        return False  # Это ошибка, так как в первом ходе не должно быть None
+        return False
     if move_type == 'truth':
-        # Игрок честен, проверяем, есть ли у него такие карты
         return player.has_rank(called_rank)
     elif move_type == 'lie':
-        # Игрок врет, проверяем, что количество карт не соответствует реальности
         if player.has_rank(called_rank):
-            return False  # Врет, но не по количеству
+            return False
         return True
 
 
 def check_winner(players):
-    """
-    Проверяет, есть ли победитель в игре.
-    Победитель - тот, кто избавился от всех карт.
-    """
+    """Проверяет, кто выиграл, если у одного игрока закончились карты"""
     for player in players:
         if len(player.hand) == 0:
             return True  # Игрок победил
@@ -183,45 +189,36 @@ def check_winner(players):
 
 
 def play_game(num_players):
-    # Создаем колоду и раздаем карты
+    """Основная игровая функция"""
     deck = create_deck()
     players_hands = deal_cards(deck, num_players)
 
-    # Создаем игроков
     players = [Player(hand, is_human=(i == 0)) for i, hand in enumerate(players_hands)]  # Первый игрок - человек
 
-    # Игровой цикл
     current_player_idx = 0
-    first_turn = True  # Для первого хода
+    first_turn = True
+    last_called_rank = None
     while True:
         current_player = players[current_player_idx]
 
-        # Если это первый ход, игрок сам выбирает ранг и количество карт
-        move = current_player.make_move(first_turn=first_turn)
+        # Игрок начинает кон
+        move = current_player.make_move(called_rank=last_called_rank, first_turn=first_turn)
 
-        called_rank = move[1] if len(move) > 1 else None  # Получаем called_rank при первом ходе
-
+        # Игрок начал ход, теперь проверяем
         if move[0] == 'start_turn':
-            print(f"Player {current_player_idx + 1} starts with {move[2]} cards of rank {called_rank}.")
-        elif move[0] == 'translate':
-            selected_cards = move[1]
-            print(
-                f"Player {current_player_idx + 1} translates with {len(selected_cards)} cards and says {called_rank}.")
-            current_player.discard_cards(selected_cards)
-        elif move[0] == 'believe':
-            print(f"Player {current_player_idx + 1} decides to believe the previous player.")
-            # Здесь будет логика проверки правды или лжи
-        elif move[0] == 'dont_believe':
-            print(f"Player {current_player_idx + 1} decides not to believe the previous player.")
+            first_turn = False
+            called_rank = move[2]
+            current_player.discard_cards(move[1])
+            print(f"{'Player ' + str(current_player_idx + 1)} starts with {len(move[1])} cards of rank {called_rank}.")
 
-        # Проверяем, кто выиграл
+        # Перевод хода
+        # Проверка победы
         if check_winner(players):
-            print(f"Player {current_player_idx + 1} wins!")
+            print("Game Over! We have a winner!")
             break
 
-        # Переходим к следующему игроку
+        # Передаем ход
         current_player_idx = (current_player_idx + 1) % num_players
-        first_turn = False  # После первого хода другие игроки могут выбирать все действия
 
 
 play_game(4)
