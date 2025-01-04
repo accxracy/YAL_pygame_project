@@ -1,4 +1,5 @@
 import pygame, os, sys
+import random
 
 
 def load_image(name, colorkey=None):
@@ -42,4 +43,14 @@ def load_deck():
             for k in range(2, 15):
                 deck.append(Card(i, j, k).get_card())
     return deck
+
+
+def create_deck():
+    deck = []
+    for suit in range(1, 3):
+        for rank in range(4):
+            deck.append(f"{rank} of {suit}")
+    random.shuffle(deck)
+    return deck
+
 
