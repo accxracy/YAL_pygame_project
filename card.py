@@ -50,6 +50,8 @@ def create_deck():
     for suit in range(1, 3):
         for rank in range(4):
             deck.append(f"{rank} of {suit}")
+    deck.append('4 of 0')
+    deck.append('4 of 1')
     random.shuffle(deck)
     return deck
 
