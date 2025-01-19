@@ -3,6 +3,7 @@ from main_menu_buttons import Button
 from test import create_deck, deal_cards
 from test import Player
 
+
 pygame.init()
 WIDTH, HEIGHT = 1280, 720
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -43,15 +44,15 @@ def main_menu():
     settings_button = Button((515, 400), 250, 100, "Настройки", font,
                              "data/buttons/option_button.png",
                              "data/buttons/option_button_hover.png",
-                             "data/sounds/click.mp3")
+                             "data/sounds/click.wav")
     play_button = Button((515, 200), 250, 100, "Играть", font,
                          "data/buttons/play_button.png",
                          "data/buttons/play_button_hover.png",
-                         "data/sounds/click.mp3")
+                         "data/sounds/click.wav")
     quit_button = Button((515, 600), 250, 100, "Выход", font,
                          "data/buttons/quit_button.png",
                          "data/buttons/quit_button_hover.png",
-                         "data/sounds/click.mp3")
+                         "data/sounds/click.wav")
 
 
 
@@ -107,29 +108,38 @@ def main_menu():
 def settings_menu():
     flag = True
 
-    back_button = Button((515, 600), 250, 100, "Назад", font,
+    with open('data/settings/settings.ini', 'r+') as fin:
+        settings = fin.read()
+        print(settings)
+    global deck_number
+    deck_number = settings.split('deck_type=')[1]
+
+
+    back_button = Button((600, 600), 250, 100, "Назад", font,
                          "data/buttons/quit_button.png",
                          "data/buttons/quit_button_hover.png",
-                         "data/sounds/click.mp3")
+                         "data/sounds/click.wav")
     deck1_button = Button((10, 300), 200, 200, None, font,
                           "data/buttons/full_1.png",
                           "data/buttons/full_1_hover.png",
-                          "data/sounds/click.mp3")
+                          "data/sounds/click.wav")
     deck2_button = Button((300, 300), 200, 200, None, font,
                           "data/buttons/full_2.png",
                           "data/buttons/full_2_hover.png",
-                          "data/sounds/click.mp3")
+                          "data/sounds/click.wav")
+    apply_button = Button((300, 600), 250, 100, 'Применить', font,
+                          "data/buttons/option_button.png",
+                          "data/buttons/option_button_hover.png",
+                          "data/sounds/click.wav")
     running = True
     while running:
         SCREEN.fill((0, 0, 0))
         SCREEN.blit(BG_menu, (0, 0))
 
-
         text_surface = font.render("Настройки", True, (255, 255, 255))
         text_rect = text_surface.get_rect(center=(WIDTH / 2, 30))
         SCREEN.blit(text_surface, text_rect)
-        global deck_number
-        text_surface_type = font.render(f"Тип колоды: {deck_number}", True, (255, 255, 255))
+        text_surface_type = font.render(f"тип колоды: {deck_number}", True, (255, 255, 255))
         text_rect_type = text_surface_type.get_rect(center=(200, 100))
         SCREEN.blit(text_surface_type, text_rect_type)
 
@@ -150,7 +160,6 @@ def settings_menu():
                     running = False
 
             if event.type == pygame.USEREVENT and event.button == back_button:
-
                 running = False
 
             if event.type == pygame.USEREVENT and event.button == deck1_button:
@@ -158,9 +167,13 @@ def settings_menu():
             if event.type == pygame.USEREVENT and event.button == deck2_button:
                 deck_number = 2
 
-            for btn in [back_button, deck1_button, deck2_button]:
+            if event.type == pygame.USEREVENT and event.button == apply_button:
+                with open('data/settings/settings.ini', 'w') as fout:
+                    fout.write(f'deck_type={deck_number}')
+
+            for btn in [back_button, deck1_button, deck2_button, apply_button]:
                 btn.han_event(event)
-        for btn in [back_button, deck1_button, deck2_button]:
+        for btn in [back_button, deck1_button, deck2_button, apply_button]:
             btn.checking_hover(pygame.mouse.get_pos())
             btn.draw(SCREEN)
 
@@ -170,15 +183,14 @@ def settings_menu():
 
 
 def game():
-    clock = pygame.time.Clock()
-    FPS = 144
+
     deck = create_deck()
     all_hand = deal_cards(deck)
     flag = True
     back_button = Button((50, 50), 100, 60, "Назад", pygame.font.Font('data/fonts/Verdana.ttf', 15),
                          "data/buttons/quit_button.png",
                          "data/buttons/quit_button_hover.png",
-                         "data/sounds/click.mp3")
+                         "data/sounds/click.wav")
 
     game_buttons = [back_button]
 
@@ -195,8 +207,8 @@ def game():
     print(card_names)
 
     for i in range(9):
-        game_buttons.append(Button(positions[i], 90, 150, "", font, f"data/cards/cards_set_2/{hand[i]}.png",
-                f"data/cards/cards_set_2/{hand[i]}.png", button_name={card_names[i]}))
+        game_buttons.append(Button(positions[i], 90, 150, "", font, f"data/cards/cards_set_{deck_number}/{hand[i]}.png",
+                f"data/cards/cards_set_{deck_number}/{hand[i]}.png", button_name={card_names[i]}))
 
     running = True
 
@@ -227,7 +239,7 @@ def game():
                 running = False
 
             for btn in game_buttons:
-                back_button.han_event(event)
+                btn.han_event(event)
         for btn in game_buttons:
             btn.checking_hover(pygame.mouse.get_pos())
             btn.draw(SCREEN)
@@ -235,5 +247,5 @@ def game():
         if flag:
             all_sprites.draw(SCREEN)
         pygame.display.flip()
-        clock.tick(FPS)
+
 
