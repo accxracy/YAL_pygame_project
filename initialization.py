@@ -1,14 +1,13 @@
 import pygame, sys, os
 from main_menu_buttons import Button
-from card import load_deck, Card, create_deck
+from test import create_deck, deal_cards
+from test import Player
 
 pygame.init()
 WIDTH, HEIGHT = 1280, 720
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Блеф")
 deck_number = 1
-
-
 
 
 def load_image(name, colorkey=None):
@@ -38,7 +37,6 @@ pygame.mouse.set_visible(False)
 BG_menu = pygame.image.load("data/BG/BG_menu.jpg")
 BG_game = pygame.image.load("data/BG/BG_game.jpg")
 font = pygame.font.Font('data/fonts/Verdana.ttf', 24)
-
 
 def main_menu():
     flag = True
@@ -108,8 +106,7 @@ def main_menu():
 
 def settings_menu():
     flag = True
-    # deck1 = load_image('cards/full_1.png')
-    # deck2 = load_image('cards/full_2.png')
+
     back_button = Button((515, 600), 250, 100, "Назад", font,
                          "data/buttons/quit_button.png",
                          "data/buttons/quit_button_hover.png",
@@ -173,19 +170,42 @@ def settings_menu():
 
 
 def game():
-    deck = load_deck(deck_number)
-    index = 0
+    clock = pygame.time.Clock()
+    FPS = 144
+    deck = create_deck()
+    all_hand = deal_cards(deck)
     flag = True
-    back_button = Button((515, 600), 250, 100, "Назад", font,
+    back_button = Button((50, 50), 100, 60, "Назад", pygame.font.Font('data/fonts/Verdana.ttf', 15),
                          "data/buttons/quit_button.png",
                          "data/buttons/quit_button_hover.png",
                          "data/sounds/click.mp3")
+
+    game_buttons = [back_button]
+
+    player = Player(all_hand[0])
+    hand = player.return_hand()
+    positions = [(100, 550), (150, 550), (200, 550), (250, 550), (300, 550),
+                 (350, 550), (400, 550), (450, 550), (500, 550)]
+    card_names = []
+    translator_suits = {'0' : 'clubs', '1':'diamonds', '2':'hearts', '3':'spades'}
+    translator_ranks = {'6':'6', '7':'7', '8':'8', '9':'9', '10':'10', '11':'jack',
+                        '12':'queen', '13':'king', '14':'ace'}
+    for i in hand:
+        card_names.append(f"{translator_suits[i.split('_')[0]]}_{translator_ranks[i.split('_')[1]]}")
+    print(card_names)
+
+    for i in range(9):
+        game_buttons.append(Button(positions[i], 90, 150, "", font, f"data/cards/cards_set_2/{hand[i]}.png",
+                f"data/cards/cards_set_2/{hand[i]}.png", button_name={card_names[i]}))
+
     running = True
-    # fps = 60
-    # clock = pygame.time.Clock()
+
+
     while running:
         SCREEN.fill((0, 0, 0))
         SCREEN.blit(BG_game, (0, 0))
+
+
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -201,24 +221,19 @@ def game():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     running = False
-                if event.key == pygame.K_SPACE:
-                    if index < 53:
-                        index += 1
-                    else:
-                        continue
+
 
             if event.type == pygame.USEREVENT and event.button == back_button:
                 running = False
-            back_button.han_event(event)
-        for btn in [back_button]:
+
+            for btn in game_buttons:
+                back_button.han_event(event)
+        for btn in game_buttons:
             btn.checking_hover(pygame.mouse.get_pos())
             btn.draw(SCREEN)
 
-        SCREEN.blit(deck[index], (10, 10))
         if flag:
             all_sprites.draw(SCREEN)
         pygame.display.flip()
-        # clock.tick(fps)
-
-
+        clock.tick(FPS)
 
