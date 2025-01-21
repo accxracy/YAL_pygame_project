@@ -34,10 +34,9 @@ class Card:
         self.flag = not self.flag
 
 
-def load_deck():
+def load_deck(deck_number):
     deck = []
-    for i in range(1, 3):
-        for j in range(4):
-            for k in range(2, 15):
-                deck.append(Card(i, j, k).get_card())
+    for j in range(4):
+        for k in range(2, 15):
+            deck.append(Card(deck_number, j, k).get_card())
     return deck

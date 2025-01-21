@@ -40,7 +40,6 @@ pygame.mouse.set_visible(False)
 BG_menu = pygame.image.load("data/BG/BG_menu.jpg")
 BG_game = pygame.image.load("data/BG/BG_game.jpg")
 font = pygame.font.Font('data/fonts/Verdana.ttf', 24)
-deck = load_deck()
 
 
 def main_menu():
@@ -179,7 +178,7 @@ def game():
                          "data/sounds/click.mp3")
 
     players = [Player(f"Игрок {i + 1}") for i in range(4)]  # Создаем 4-х игроков
-    deck = load_deck()
+    deck = load_deck(deck_number)
     shuffle(deck)
 
     # Раздаем карты игрокам
@@ -207,6 +206,10 @@ def game():
                 coords = event.pos
                 flag = pygame.mouse.get_focused()
                 sprite.rect.x, sprite.rect.y = coords
+            
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    running = False
 
         # Отображаем карты на руках игроков
         current_player = players[current_player_idx]
