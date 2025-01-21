@@ -1,8 +1,9 @@
-import pygame, sys, os
+import pygame
+import sys
+import os
 from main_menu_buttons import Button
 from card import load_deck, Card
-from game import play_game
-
+from player import Player
 
 pygame.init()
 WIDTH, HEIGHT = 1280, 720
@@ -10,10 +11,13 @@ SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Блеф")
 deck = load_deck()
 
+BG_menu = pygame.image.load("data/BG/BG_menu.jpg")
+BG_game = pygame.image.load("data/BG/BG_game.jpg")
+font = pygame.font.Font('data/fonts/Verdana.ttf', 24)
+
 
 def load_image(name, colorkey=None):
     fullname = os.path.join('data', name)
-    # если файл не существует, то выходим
     if not os.path.isfile(fullname):
         print(f"Файл с изображением '{fullname}' не найден")
         sys.exit()
@@ -26,18 +30,6 @@ def load_image(name, colorkey=None):
     else:
         image = image.convert_alpha()
     return image
-
-
-all_sprites = pygame.sprite.Group()
-sprite = pygame.sprite.Sprite()
-sprite.image = load_image("arrow.png")
-sprite.rect = sprite.image.get_rect()
-all_sprites.add(sprite)
-pygame.mouse.set_visible(False)
-
-BG_menu = pygame.image.load("data/BG/BG_menu.jpg")
-BG_game = pygame.image.load("data/BG/BG_game.jpg")
-font = pygame.font.Font('data/fonts/Verdana.ttf', 24)
 
 
 def main_menu():
@@ -67,138 +59,70 @@ def main_menu():
             if event.type == pygame.MOUSEMOTION:
                 coords = event.pos
                 flag = pygame.mouse.get_focused()
-                sprite.rect.x, sprite.rect.y = coords
 
             if event.type == pygame.USEREVENT and event.button == play_button:
                 game()
-
-            if event.type == pygame.USEREVENT and event.button == settings_button:
-                settings_menu()
 
             if event.type == pygame.USEREVENT and event.button == quit_button:
                 running = False
                 pygame.quit()
                 sys.exit()
 
-            for btn in [play_button, settings_button, quit_button]:
+            for btn in [play_button, quit_button]:
                 btn.han_event(event)
 
-        for btn in [play_button, settings_button, quit_button]:
+        for btn in [play_button, quit_button]:
             btn.checking_hover(pygame.mouse.get_pos())
             btn.draw(SCREEN)
 
-        if flag:
-            all_sprites.draw(SCREEN)
-
-        pygame.display.flip()
-
-
-def settings_menu():
-    flag = True
-    # deck1 = load_image('cards/full_1.png')
-    # deck2 = load_image('cards/full_2.png')
-    back_button = Button((1000, 360), 250, 100, "Назад", font,
-                         "data/buttons/quit_button.png",
-                         "data/buttons/quit_button_hover.png",
-                         "data/sounds/click.mp3")
-    deck1_button = Button((10, 10), 300, 225, None, font,
-                          "data/buttons/full_1.png",
-                          "data/buttons/full_1_hover.png",
-                          "data/sounds/click.mp3")
-    deck2_button = Button((10, 360), 300, 225, None, font,
-                          "data/buttons/full_2.png",
-                          "data/buttons/full_2_hover.png",
-                          "data/sounds/click.mp3")
-    running = True
-    while running:
-        SCREEN.fill((0, 0, 0))
-        SCREEN.blit(BG_menu, (0, 0))
-
-
-        text_surface = font.render("Настройки", True, (255, 255, 255))
-        text_rect = text_surface.get_rect(center=(WIDTH / 2, 100))
-        SCREEN.blit(text_surface, text_rect)
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-                pygame.quit()
-                sys.exit()
-
-            if event.type == pygame.MOUSEMOTION:
-                coords = event.pos
-                flag = pygame.mouse.get_focused()
-                sprite.rect.x, sprite.rect.y = coords
-
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                    running = False
-
-            if event.type == pygame.USEREVENT and event.button == back_button:
-
-                running = False
-
-            for btn in [back_button, deck1_button, deck2_button]:
-                btn.han_event(event)
-        for btn in [back_button, deck1_button, deck2_button]:
-            btn.checking_hover(pygame.mouse.get_pos())
-            btn.draw(SCREEN)
-
-        if flag:
-            all_sprites.draw(SCREEN)
         pygame.display.flip()
 
 
 def game():
     index = 0
     flag = True
-    back_button = Button((1000, 360), 250, 100, "Назад", font,
-                         "data/buttons/quit_button.png",
-                         "data/buttons/quit_button_hover.png",
-                         "data/sounds/click.mp3")
-    running = True
+    players = [Player(f"Игрок {i + 1}") for i in range(4)]  # Создаем 4-х игроков
+    deck = load_deck()
 
-    # Игровой цикл
+    # Раздаем карты игрокам
+    for i, player in enumerate(players):
+        player.hand = deck[i * 13:(i + 1) * 13]  # По 13 карт каждому
+
+    current_player_idx = 0
+    is_con_started = False
+    cards_on_table = []
+
+    running = True
     while running:
         SCREEN.fill((0, 0, 0))
         SCREEN.blit(BG_game, (0, 0))
-        # Обновляем экран
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-                pygame.quit()
-                sys.exit()
 
-            if event.type == pygame.MOUSEMOTION:
-                coords = event.pos
-                flag = pygame.mouse.get_focused()
-                sprite.rect.x, sprite.rect.y = coords
+        current_player = players[current_player_idx]
 
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                    running = False
-                if event.key == pygame.K_SPACE:
-                    index = (index + 1) % 104
+        # Проверка начала кона (для первого игрока)
+        if not is_con_started:
+            if current_player.is_turn:
+                # Игрок делает кон
+                selected_cards = current_player.play_card(num_cards=3, rank="5")  # Пример
+                cards_on_table.extend(selected_cards)
+                is_con_started = True
+                current_player_idx = (current_player_idx + 1) % 4  # Переход хода
+        else:
+            if current_player.is_turn:
+                # Игрок может выбрать Поверить, Не поверить, Перевести
+                decision = "verify"  # Пример действия
+                if decision == "verify":
+                    # Поверить - проверяем карты предыдущего игрока
+                    pass
+                elif decision == "not_verify":
+                    # Не верю - проверяем карты
+                    pass
+                elif decision == "pass":
+                    # Перевести ход
+                    current_player_idx = (current_player_idx + 1) % 4
 
-            if event.type == pygame.USEREVENT and event.button == back_button:
-                running = False
-            back_button.han_event(event)
-        for btn in [back_button]:
-            btn.checking_hover(pygame.mouse.get_pos())
-            btn.draw(SCREEN)
+        # Отображаем карты на столе и интерфейс
+        for card in cards_on_table:
+            SCREEN.blit(card, (100, 100))  # Примерная позиция
 
-        # Временно отображаем карту
-        SCREEN.blit(deck[index], (10, 10))
-
-        if flag:
-            all_sprites.draw(SCREEN)
         pygame.display.flip()
-
-
-def render_player_hand(player, player_idx):
-    """Функция для отображения карт игрока на экране"""
-    # Отображаем карты игрока внизу экрана (для примера, просто по горизонтали)
-    x_offset = 50 + (player_idx * 250)  # Для разных игроков разные позиции
-    for idx, card in enumerate(player.hand):
-        # Отображаем каждую карту, например, по горизонтали
-        SCREEN.blit(card.image, (x_offset + idx * 70, HEIGHT - 120))
