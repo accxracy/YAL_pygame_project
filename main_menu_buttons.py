@@ -1,8 +1,8 @@
 import pygame
 
-
 class Button():
-    def __init__(self,pos, width, height, text, font, image, image_hover=None, sound=None):
+	def __init__(self,pos, width, height, text, font, image, image_hover=None, sound=None):
+
 		self.font = font
 		self.x_pos = pos[0]
 		self.y_pos = pos[1]
@@ -21,20 +21,21 @@ class Button():
 			self.sound = pygame.mixer.Sound(self.sound)
 		self.is_hovered = False
 
-    def draw(self, screen):
-        current_image = self.hover_image if self.is_hovered else self.image
-        screen.blit(current_image, self.rect.topleft)
+	def draw(self, screen):
+		current_image = self.hover_image if self.is_hovered else self.image
+		screen.blit(current_image, self.rect.topleft)
 
-        font = self.font
-        text_s = font.render(self.text, True, (255, 255, 255))
-        text_rect = text_s.get_rect(center=self.rect.center)
-        screen.blit(text_s, text_rect)
+		font = self.font
+		text_s = font.render(self.text, True, (255, 255, 255))
+		text_rect = text_s.get_rect(center=self.rect.center)
+		screen.blit(text_s, text_rect)
 
-    def checking_hover(self, mouse_position):
-        self.is_hovered = self.rect.collidepoint(mouse_position)
+	def checking_hover(self, mouse_position):
+		self.is_hovered = self.rect.collidepoint(mouse_position)
 
-    def han_event(self, event):
-        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and self.is_hovered:
-            if self.sound:
-                self.sound.play()
-            pygame.event.post(pygame.event.Event(pygame.USEREVENT, button=self))
+	def han_event(self, event):
+		if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and self.is_hovered:
+			if self.sound:
+				self.sound.play()
+			pygame.event.post(pygame.event.Event(pygame.USEREVENT, button=self))
+
