@@ -1,6 +1,7 @@
 import pygame, sys, os
 from main_menu_buttons import Button
 from card import load_deck, Card
+from game import play_game
 
 
 pygame.init()
@@ -156,12 +157,12 @@ def game():
                          "data/buttons/quit_button_hover.png",
                          "data/sounds/click.mp3")
     running = True
-    # fps = 60
-    # clock = pygame.time.Clock()
+
+    # Игровой цикл
     while running:
         SCREEN.fill((0, 0, 0))
         SCREEN.blit(BG_game, (0, 0))
-
+        # Обновляем экран
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -186,8 +187,18 @@ def game():
             btn.checking_hover(pygame.mouse.get_pos())
             btn.draw(SCREEN)
 
+        # Временно отображаем карту
         SCREEN.blit(deck[index], (10, 10))
+
         if flag:
             all_sprites.draw(SCREEN)
         pygame.display.flip()
-        # clock.tick(fps)
+
+
+def render_player_hand(player, player_idx):
+    """Функция для отображения карт игрока на экране"""
+    # Отображаем карты игрока внизу экрана (для примера, просто по горизонтали)
+    x_offset = 50 + (player_idx * 250)  # Для разных игроков разные позиции
+    for idx, card in enumerate(player.hand):
+        # Отображаем каждую карту, например, по горизонтали
+        SCREEN.blit(card.image, (x_offset + idx * 70, HEIGHT - 120))
