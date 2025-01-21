@@ -4,6 +4,7 @@ import os
 from main_menu_buttons import Button
 from card import load_deck, Card
 from player import Player
+from random import shuffle
 
 pygame.init()
 
@@ -179,6 +180,7 @@ def game():
 
     players = [Player(f"Игрок {i + 1}") for i in range(4)]  # Создаем 4-х игроков
     deck = load_deck()
+    shuffle(deck)
 
     # Раздаем карты игрокам
     for i, player in enumerate(players):
@@ -194,6 +196,17 @@ def game():
     while running:
         SCREEN.fill((0, 0, 0))
         SCREEN.blit(BG_game, (0, 0))
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+                pygame.quit()
+                sys.exit()
+
+            if event.type == pygame.MOUSEMOTION:
+                coords = event.pos
+                flag = pygame.mouse.get_focused()
+                sprite.rect.x, sprite.rect.y = coords
 
         # Отображаем карты на руках игроков
         current_player = players[current_player_idx]
@@ -230,6 +243,7 @@ def game():
         # Отображаем карты на столе и интерфейс
         for card in cards_on_table:
             SCREEN.blit(card, (100, 100))  # Примерная позиция
-
+        if flag:
+            all_sprites.draw(SCREEN)
         pygame.display.flip()
         clock.tick(fps)
