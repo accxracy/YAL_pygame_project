@@ -179,7 +179,6 @@ def game():
 
     players = [Player(f"Игрок {i + 1}") for i in range(4)]  # Создаем 4-х игроков
     deck = load_deck(deck_number)
-    shuffle(deck)
 
     # Раздаем карты игрокам
     for i, player in enumerate(players):
@@ -206,7 +205,7 @@ def game():
                 coords = event.pos
                 flag = pygame.mouse.get_focused()
                 sprite.rect.x, sprite.rect.y = coords
-            
+
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     running = False

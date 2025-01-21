@@ -1,6 +1,7 @@
 import pygame
 import os
 import sys
+from random import shuffle
 
 def load_image(name, colorkey=None):
     fullname = os.path.join('data', name)
@@ -39,4 +40,5 @@ def load_deck(deck_number):
     for j in range(4):
         for k in range(2, 15):
             deck.append(Card(deck_number, j, k).get_card())
+    shuffle(deck)
     return deck
