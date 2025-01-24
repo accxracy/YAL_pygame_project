@@ -1,8 +1,7 @@
 import pygame, sys, os
 from main_menu_buttons import Button
-from test import create_deck, deal_cards
-from test import Player
-
+from GOOOOL import football_game
+from Nauru import nauru_game
 
 pygame.init()
 WIDTH, HEIGHT = 1280, 720
@@ -184,31 +183,21 @@ def settings_menu():
 
 def game():
 
-    deck = create_deck()
-    all_hand = deal_cards(deck)
+
     flag = True
-    back_button = Button((50, 50), 100, 60, "Назад", pygame.font.Font('data/fonts/Verdana.ttf', 15),
+    back_button = Button((50, 50), 150, 75, "Назад", pygame.font.Font('data/fonts/Verdana.ttf', 20),
                          "data/buttons/quit_button.png",
                          "data/buttons/quit_button_hover.png",
                          "data/sounds/click.wav")
 
-    game_buttons = [back_button]
-
-    player = Player(all_hand[0])
-    hand = player.return_hand()
-    positions = [(100, 550), (150, 550), (200, 550), (250, 550), (300, 550),
-                 (350, 550), (400, 550), (450, 550), (500, 550)]
-    card_names = []
-    translator_suits = {'0' : 'clubs', '1':'diamonds', '2':'hearts', '3':'spades'}
-    translator_ranks = {'6':'6', '7':'7', '8':'8', '9':'9', '10':'10', '11':'jack',
-                        '12':'queen', '13':'king', '14':'ace'}
-    for i in hand:
-        card_names.append(f"{translator_suits[i.split('_')[0]]}_{translator_ranks[i.split('_')[1]]}")
-    print(card_names)
-
-    for i in range(9):
-        game_buttons.append(Button(positions[i], 90, 150, "", font, f"data/cards/cards_set_{deck_number}/{hand[i]}.png",
-                f"data/cards/cards_set_{deck_number}/{hand[i]}.png", button_name={card_names[i]}))
+    nauru_button = Button((200, 300), 250, 100, "Курочка", pygame.font.Font('data/fonts/Verdana.ttf', 20),
+                         "data/buttons/quit_button.png",
+                         "data/buttons/quit_button_hover.png",
+                         "data/sounds/click.wav")
+    football_button = Button((800, 300), 250, 100, "Футбольчик", pygame.font.Font('data/fonts/Verdana.ttf', 20),
+                          "data/buttons/quit_button.png",
+                          "data/buttons/quit_button_hover.png",
+                          "data/sounds/click.wav")
 
     running = True
 
@@ -217,7 +206,12 @@ def game():
         SCREEN.fill((0, 0, 0))
         SCREEN.blit(BG_game, (0, 0))
 
-
+        rules_nauru = font.render("ПРАВИЛА КУРОЧКИ", True, (255, 255, 255))
+        text_rect = rules_nauru.get_rect(center=(300, 500))
+        SCREEN.blit(rules_nauru, text_rect)
+        rules_football = font.render(f"ПРАВИЛА ФУТБОЛЬЧИКА", True, (255, 255, 255))
+        text_rect_type = rules_football.get_rect(center=(900, 500))
+        SCREEN.blit(rules_football, text_rect_type)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -238,9 +232,15 @@ def game():
             if event.type == pygame.USEREVENT and event.button == back_button:
                 running = False
 
-            for btn in game_buttons:
+            if event.type == pygame.USEREVENT and event.button == nauru_button:
+                nauru_game(SCREEN)
+
+            if event.type == pygame.USEREVENT and event.button == football_button:
+                football_game(SCREEN)
+
+            for btn in [back_button, football_button, nauru_button]:
                 btn.han_event(event)
-        for btn in game_buttons:
+        for btn in [back_button, football_button, nauru_button]:
             btn.checking_hover(pygame.mouse.get_pos())
             btn.draw(SCREEN)
 
