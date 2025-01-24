@@ -1,46 +1,27 @@
-from random import shuffle
+import pygame
+import sys, os
+
+pygame.init()
 
 
-def create_deck():
-    deck = []
-    suits = ['0', '1', '2', '3']
-    ranks = ['6', '7', '8', '9', '10', '11', '12', '13', '14']
-    for suit in suits:
-        for rank in ranks:
-            deck.append(f"{suit}_{rank}")
-    shuffle(deck)
-    return deck
+def load_image(name, colorkey=None):
+    fullname = os.path.join('data', name)
+    # если файл не существует, то выходим
+    if not os.path.isfile(fullname):
+        print(f"Файл с изображением '{fullname}' не найден")
+        sys.exit()
+    image = pygame.image.load(fullname)
+    if colorkey is not None:
+        image = image.convert()
+        if colorkey == -1:
+            colorkey = image.get_at((0, 0))
+        image.set_colorkey(colorkey)
+    else:
+        image = image.convert_alpha()
+    return image
 
-def deal_cards(deck):
-    size = 9
-    all_hand = [deck[i:i + size] for i in range(0, len(deck), size)]
-    return all_hand
-
-class Player:
-    def __init__(self, hand):
-        self.hand = hand
-        self.moves = ['translate', 'trust', 'don`t trust']
-    '''
-    def move(self, move_number, card_number=None, cards=None):
-        if move_number == 0:
-            cards = cards
-            card_number = card_number
-            self.hand = list(set(self.hand) - set(cards))
-        elif move_number == 1:
-            pass
-        elif move_number == 2:
-            pass
-    '''
-
-    def return_hand(self):
-        return self.hand
-
-deck = create_deck()
-all_hand = deal_cards(deck)
-
-player = Player(all_hand[0])
-print(player.return_hand())
-
-
-
-
+all_sprites = pygame.sprite.Group()
+sprite = pygame.sprite.Sprite()
+sprite.image = load_image("arrow.png")
+sprite.rect = sprite.image.get_rect()
+all_sprites.add(sprite)

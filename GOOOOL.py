@@ -1,14 +1,14 @@
 import pygame
 from main_menu_buttons import Button
 import sys, os
+from test import all_sprites, sprite
+
 
 
 
 pygame.init()
-WIDTH, HEIGHT = 1280, 720
-SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Карточные игры)")
-deck_number = 1
+
+
 
 def load_image(name, colorkey=None):
     fullname = os.path.join('data', name)
@@ -30,11 +30,7 @@ BG_menu = pygame.image.load("data/BG/BG_menu.jpg")
 BG_game = pygame.image.load("data/BG/BG_game.jpg")
 font = pygame.font.Font('data/fonts/Verdana.ttf', 24)
 
-all_sprites = pygame.sprite.Group()
-sprite = pygame.sprite.Sprite()
-sprite.image = load_image("arrow.png")
-sprite.rect = sprite.image.get_rect()
-all_sprites.add(sprite)
+
 pygame.mouse.set_visible(False)
 
 
@@ -42,7 +38,7 @@ def football_game(SCREEN):
     flag = True
     running = True
 
-    back_button = back_button = Button((50, 50), 150, 75, "Назад", pygame.font.Font('data/fonts/Verdana.ttf', 20),
+    back_button = Button((50, 50), 150, 75, "Назад", pygame.font.Font('data/fonts/Verdana.ttf', 20),
                                        "data/buttons/quit_button.png",
                                        "data/buttons/quit_button_hover.png",
                                        "data/sounds/click.wav")

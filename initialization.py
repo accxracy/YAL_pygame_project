@@ -2,6 +2,7 @@ import pygame, sys, os
 from main_menu_buttons import Button
 from GOOOOL import football_game
 from Nauru import nauru_game
+from test import sprite, all_sprites
 
 pygame.init()
 WIDTH, HEIGHT = 1280, 720
@@ -26,12 +27,6 @@ def load_image(name, colorkey=None):
         image = image.convert_alpha()
     return image
 
-
-all_sprites = pygame.sprite.Group()
-sprite = pygame.sprite.Sprite()
-sprite.image = load_image("arrow.png")
-sprite.rect = sprite.image.get_rect()
-all_sprites.add(sprite)
 pygame.mouse.set_visible(False)
 
 BG_menu = pygame.image.load("data/BG/BG_menu.jpg")
