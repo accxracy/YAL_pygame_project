@@ -30,7 +30,7 @@ def load_image(name, colorkey=None):
 pygame.mouse.set_visible(False)
 
 BG_menu = pygame.image.load("data/BG/BG_menu.jpg")
-BG_game = pygame.image.load("data/BG/BG_game.jpg")
+BG_game = pygame.image.load("data/BG/BG_menu.jpg")
 font = pygame.font.Font('data/fonts/Verdana.ttf', 24)
 
 def main_menu():
@@ -54,11 +54,11 @@ def main_menu():
     while running:
         SCREEN.blit(BG_menu, (0, 0))
 
-        text_surface_title = font.render('Карточная игра "Блеф"', True, (255, 255, 255))
+        text_surface_title = font.render('Карточные игры)', True, (255, 255, 255))
         text_rect_title = text_surface_title.get_rect(center=(WIDTH / 2, 30))
         SCREEN.blit(text_surface_title, text_rect_title)
 
-        text_surface_desc = font.render('Избавьтесь от всех карт, обманув соперников и не дав обмануть себя.', True,
+        text_surface_desc = font.render('Самые известные и веселые карточные игры собраны здесь', True,
                                         (255, 255, 255))
         text_rect_desc = text_surface_desc.get_rect(center=(WIDTH / 2, 100))
         SCREEN.blit(text_surface_desc, text_rect_desc)
@@ -185,12 +185,12 @@ def game():
                          "data/sounds/click.wav")
 
     nauru_button = Button((200, 300), 250, 100, "Курочка", pygame.font.Font('data/fonts/Verdana.ttf', 20),
-                         "data/buttons/quit_button.png",
-                         "data/buttons/quit_button_hover.png",
+                         "data/buttons/play_button.png",
+                         "data/buttons/play_button_hover.png",
                          "data/sounds/click.wav")
     football_button = Button((800, 300), 250, 100, "Футбольчик", pygame.font.Font('data/fonts/Verdana.ttf', 20),
-                          "data/buttons/quit_button.png",
-                          "data/buttons/quit_button_hover.png",
+                          "data/buttons/play_button.png",
+                          "data/buttons/play_button_hover.png",
                           "data/sounds/click.wav")
 
     running = True
@@ -199,6 +199,10 @@ def game():
     while running:
         SCREEN.fill((0, 0, 0))
         SCREEN.blit(BG_game, (0, 0))
+
+        rules_nauru = font.render("Выберите игру", True, (255, 255, 255))
+        text_rect = rules_nauru.get_rect(center=(WIDTH / 2, 30))
+        SCREEN.blit(rules_nauru, text_rect)
 
         rules_nauru = font.render("ПРАВИЛА КУРОЧКИ", True, (255, 255, 255))
         text_rect = rules_nauru.get_rect(center=(300, 500))
