@@ -42,6 +42,11 @@ def football_game(SCREEN):
     flag = True
     running = True
 
+    back_button = back_button = Button((50, 50), 150, 75, "Назад", pygame.font.Font('data/fonts/Verdana.ttf', 20),
+                                       "data/buttons/quit_button.png",
+                                       "data/buttons/quit_button_hover.png",
+                                       "data/sounds/click.wav")
+
     while running:
         SCREEN.fill((0, 0, 0))
         SCREEN.blit(BG_game, (0, 0))
@@ -64,6 +69,11 @@ def football_game(SCREEN):
             if event.type == pygame.USEREVENT and event.button == back_button:
                 running = False
 
+            for btn in [back_button]:
+                btn.han_event(event)
+        for btn in [back_button]:
+            btn.checking_hover(pygame.mouse.get_pos())
+            btn.draw(SCREEN)
 
         if flag:
             all_sprites.draw(SCREEN)
