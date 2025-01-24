@@ -56,3 +56,5 @@ def create_deck():
     return deck
 
 
+def get_back():
+    return load_image(f'cards/cards_set_1/back.png')
