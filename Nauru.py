@@ -3,9 +3,7 @@ from main_menu_buttons import Button
 import sys, os
 from test import all_sprites, sprite
 
-
 pygame.init()
-
 
 def load_image(name, colorkey=None):
     fullname = os.path.join('data', name)

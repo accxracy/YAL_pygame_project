@@ -178,7 +178,6 @@ def settings_menu():
 
 def game():
 
-
     flag = True
     back_button = Button((50, 50), 150, 75, "Назад", pygame.font.Font('data/fonts/Verdana.ttf', 20),
                          "data/buttons/quit_button.png",
