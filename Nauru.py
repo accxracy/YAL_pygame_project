@@ -2,8 +2,16 @@ import pygame
 from main_menu_buttons import Button
 import sys, os
 from cursor import all_sprites, sprite
+from card import load_deck, get_back
 
 pygame.init()
+
+with open('data/settings/settings.ini', 'r+') as fin:
+    settings = fin.read()
+    print(settings)
+global deck_number
+deck_number = settings.split('deck_type=')[1]
+
 
 def load_image(name, colorkey=None):
     fullname = os.path.join('data', name)
@@ -21,19 +29,19 @@ def load_image(name, colorkey=None):
         image = image.convert_alpha()
     return image
 
+
 BG_menu = pygame.image.load("data/BG/BG_menu.jpg")
 BG_game = pygame.image.load("data/BG/BG_game.jpg")
 font = pygame.font.Font('data/fonts/Verdana.ttf', 24)
-
-
+deck = load_deck(deck_number)
 
 pygame.mouse.set_visible(False)
 
 
-
 def nauru_game(SCREEN):
 
-    back_button = back_button = Button((50, 50), 150, 75, "Назад", pygame.font.Font('data/fonts/Verdana.ttf', 20),
+    back_button = Button((50, 50), 150, 75, "Назад",
+                         pygame.font.Font('data/fonts/Verdana.ttf', 20),
                          "data/buttons/quit_button.png",
                          "data/buttons/quit_button_hover.png",
                          "data/sounds/click.wav")
@@ -44,6 +52,7 @@ def nauru_game(SCREEN):
     while running:
         SCREEN.fill((0, 0, 0))
         SCREEN.blit(BG_game, (0, 0))
+        SCREEN.blit(get_back(), (700, 300))
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
