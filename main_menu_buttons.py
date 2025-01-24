@@ -1,7 +1,7 @@
 import pygame
 
 class Button:
-	def __init__(self,pos, width, height, text, font, image, image_hover=None, sound=None):
+	def __init__(self,pos, width, height, text, font, image, image_hover=None, sound=None, button_name=None):
 
 		self.font = font
 		self.x_pos = pos[0]
@@ -22,6 +22,9 @@ class Button:
 			self.sound = pygame.mixer.Sound(self.sound)
 		self.is_hovered = False
 
+		if button_name:
+			self.button_name = button_name
+
 	def draw(self, screen):
 		current_image = self.hover_image if self.is_hovered else self.image
 		screen.blit(current_image, self.rect.topleft)
@@ -39,6 +42,13 @@ class Button:
 			if self.sound:
 				self.sound.play()
 			pygame.event.post(pygame.event.Event(pygame.USEREVENT, button=self))
+
+	def return_button_name(self):
+		if self.button_name:
+			return self.button_name
+		else:
+			return None
+
 
 
 
