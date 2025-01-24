@@ -3,6 +3,7 @@ import os
 import sys
 from random import shuffle
 
+
 def load_image(name, colorkey=None):
     fullname = os.path.join('data', name)
     if not os.path.isfile(fullname):
@@ -42,3 +43,7 @@ def load_deck(deck_number):
             deck.append(Card(deck_number, j, k).get_card())
     shuffle(deck)
     return deck
+
+
+def found_back(deck_number):
+    return load_image(f'cards/cards_set_{deck_number}/back.png')
