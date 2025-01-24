@@ -5,10 +5,8 @@ from card import load_deck, Card, create_deck
 pygame.init()
 WIDTH, HEIGHT = 1280, 720
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Блеф")
+pygame.display.set_caption("Карточные игры)")
 deck_number = 1
-
-
 
 
 def load_image(name, colorkey=None):
