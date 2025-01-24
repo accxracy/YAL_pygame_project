@@ -3,6 +3,7 @@ from main_menu_buttons import Button
 from GOOOOL import football_game
 from Nauru import nauru_game
 from cursor import sprite, all_sprites
+from authors import authors
 
 pygame.init()
 WIDTH, HEIGHT = 1280, 720
@@ -39,13 +40,18 @@ def main_menu():
                              "data/buttons/option_button.png",
                              "data/buttons/option_button_hover.png",
                              "data/sounds/click.wav")
-    play_button = Button((515, 200), 250, 100, "Играть", font,
+    play_button = Button((515, 300), 250, 100, "Играть", font,
                          "data/buttons/play_button.png",
                          "data/buttons/play_button_hover.png",
                          "data/sounds/click.wav")
-    quit_button = Button((515, 600), 250, 100, "Выход", font,
+    quit_button = Button((515, 500), 250, 100, "Выход", font,
                          "data/buttons/quit_button.png",
                          "data/buttons/quit_button_hover.png",
+                         "data/sounds/click.wav")
+
+    final_button = Button((515, 600), 250, 100, "Авторы", font,
+                         "data/buttons/button_authors.png",
+                         "data/buttons/button_authors_hover.png",
                          "data/sounds/click.wav")
 
 
@@ -80,16 +86,20 @@ def main_menu():
             if event.type == pygame.USEREVENT and event.button == settings_button:
                 settings_menu()
 
+            if event.type == pygame.USEREVENT and event.button == final_button:
+                authors(SCREEN)
+
+
 
             if event.type == pygame.USEREVENT and event.button == quit_button:
                 running = False
                 pygame.quit()
                 sys.exit()
 
-            for btn in [play_button, settings_button, quit_button]:
+            for btn in [play_button, settings_button, quit_button, final_button]:
                 btn.han_event(event)
 
-        for btn in [play_button, settings_button, quit_button]:
+        for btn in [play_button, settings_button, quit_button, final_button]:
             btn.checking_hover(pygame.mouse.get_pos())
             btn.draw(SCREEN)
 
