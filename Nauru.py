@@ -1,7 +1,7 @@
 import pygame
 from main_menu_buttons import Button
 import sys, os
-from test import all_sprites, sprite
+from cursor import all_sprites, sprite
 
 pygame.init()
 

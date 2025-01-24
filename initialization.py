@@ -2,7 +2,7 @@ import pygame, sys, os
 from main_menu_buttons import Button
 from GOOOOL import football_game
 from Nauru import nauru_game
-from test import sprite, all_sprites
+from cursor import sprite, all_sprites
 
 pygame.init()
 WIDTH, HEIGHT = 1280, 720
