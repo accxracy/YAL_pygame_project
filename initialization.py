@@ -4,6 +4,7 @@ from cursor import sprite, all_sprites
 from authors import authors
 from settings import settings_menu
 from game_chooser import game_chooser
+from statistics import statisctis_screen
 
 
 pygame.init()
@@ -37,22 +38,27 @@ font = pygame.font.Font('data/fonts/Verdana.ttf', 24)
 
 def main_menu():
     flag = True
-    settings_button = Button((515, 400), 250, 100, "Настройки", font,
+    settings_button = Button((515, 300), 250, 100, "Настройки", font,
                              "data/buttons/option_button.png",
                              "data/buttons/option_button_hover.png",
                              "data/sounds/click.wav")
-    play_button = Button((515, 300), 250, 100, "Играть", font,
+    play_button = Button((515, 200), 250, 100, "Играть", font,
                          "data/buttons/play_button.png",
                          "data/buttons/play_button_hover.png",
                          "data/sounds/click.wav")
-    quit_button = Button((515, 500), 250, 100, "Выход", font,
+    quit_button = Button((515, 600), 250, 100, "Выход", font,
                          "data/buttons/quit_button.png",
                          "data/buttons/quit_button_hover.png",
                          "data/sounds/click.wav")
 
-    final_button = Button((515, 600), 250, 100, "Авторы", font,
+    final_button = Button((515, 500), 250, 100, "Авторы", font,
                          "data/buttons/button_authors.png",
                          "data/buttons/button_authors_hover.png",
+                         "data/sounds/click.wav")
+
+    statistic_button = Button((515, 400), 250, 100, "Статистика", font,
+                         "data/buttons/statistics_button.png",
+                         "data/buttons/statistics_hover_button.png",
                          "data/sounds/click.wav")
 
 
@@ -90,6 +96,9 @@ def main_menu():
             if event.type == pygame.USEREVENT and event.button == final_button:
                 authors(SCREEN)
 
+            if event.type == pygame.USEREVENT and event.button == statistic_button:
+                statisctis_screen(SCREEN)
+
 
 
             if event.type == pygame.USEREVENT and event.button == quit_button:
@@ -97,10 +106,10 @@ def main_menu():
                 pygame.quit()
                 sys.exit()
 
-            for btn in [play_button, settings_button, quit_button, final_button]:
+            for btn in [play_button, settings_button, quit_button, final_button, statistic_button]:
                 btn.han_event(event)
 
-        for btn in [play_button, settings_button, quit_button, final_button]:
+        for btn in [play_button, settings_button, quit_button, final_button, statistic_button]:
             btn.checking_hover(pygame.mouse.get_pos())
             btn.draw(SCREEN)
 

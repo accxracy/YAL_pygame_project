@@ -41,7 +41,7 @@ def game_chooser(SCREEN):
         SCREEN.blit(BG_game, (0, 0))
 
         rules_nauru = font.render("Выберите игру", True, (255, 255, 255))
-        text_rect = rules_nauru.get_rect(center=(720 / 2, 30))
+        text_rect = rules_nauru.get_rect(center=(360, 30))
         SCREEN.blit(rules_nauru, text_rect)
 
         rules_nauru = font.render("ПРАВИЛА КУРОЧКИ", True, (255, 255, 255))
