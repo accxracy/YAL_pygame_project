@@ -24,6 +24,21 @@ def load_image(name, colorkey=None):
 
 all_sprites = pygame.sprite.Group()
 sprite = pygame.sprite.Sprite()
-sprite.image = load_image("arrow.png")
+sprite.image = load_image("images/arrow.png")
 sprite.rect = sprite.image.get_rect()
 all_sprites.add(sprite)
+
+
+class Card(pygame.sprite.Sprite):
+    def __init__(self, x, filename):
+        self.x = x
+
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load(filename).convert_alpha()
+        self.rect = self.image.get_rect(center=(self.x, 300))
+
+
+
+
+
+

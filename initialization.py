@@ -1,6 +1,6 @@
 import pygame, sys, os
 from main_menu_buttons import Button
-from cursor import sprite, all_sprites
+from sprite_classes import sprite, all_sprites
 from authors import authors
 from settings import settings_menu
 from game_chooser import game_chooser
@@ -37,6 +37,10 @@ BG_game = pygame.image.load("data/BG/BG_menu.jpg")
 font = pygame.font.Font('data/fonts/Verdana.ttf', 24)
 
 def main_menu():
+    pygame.mixer.music.load("data/sounds/Jaz_Z.mp3")
+    pygame.mixer.music.play(-1)
+    vol = 0.01
+    pygame.mixer.music.set_volume(vol)
     flag = True
     settings_button = Button((515, 300), 250, 100, "Настройки", font,
                              "data/buttons/option_button.png",

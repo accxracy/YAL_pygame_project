@@ -2,7 +2,7 @@ from random import shuffle
 import pygame
 from main_menu_buttons import Button
 import sys, os
-from cursor import all_sprites, sprite
+from sprite_classes import all_sprites, sprite, Card
 
 
 pygame.init()
@@ -36,8 +36,13 @@ def load_image(name, colorkey=None):
     return image
 
 
+
+
+
+
+
 BG_menu = pygame.image.load("data/BG/BG_menu.jpg")
-BG_game = pygame.image.load("data/BG/BG_game.jpg")
+
 font = pygame.font.Font('data/fonts/Verdana.ttf', 24)
 
 
@@ -46,11 +51,13 @@ pygame.mouse.set_visible(False)
 
 def nauru_game(SCREEN):
 
+
+
     with open('data/settings/settings.ini', 'r+') as fin:
         settings = fin.read()
-        print(settings)
+
         deck_number = settings.split('deck_type=')[1]
-        print(deck_number)
+
 
     back_button = Button((50, 50), 150, 75, "Выйти",
                          pygame.font.Font('data/fonts/Verdana.ttf', 20),
@@ -58,49 +65,52 @@ def nauru_game(SCREEN):
                          "data/buttons/quit_button_hover.png",
                          "data/sounds/click.wav")
 
-    deck_button =  Button((640, 300), 97, 136, "",
+    deck_button =  Button((640, 360), 97, 136, "",
                          pygame.font.Font('data/fonts/Verdana.ttf', 20),
-                         "data/cards/cards_set_1/back.png")
+                         "data/cards/cards_set_1/back.png", sound='data/sounds/card_sound.mp3')
 
     deck = create_deck()
 
-    print(len(deck))
 
     flag = True
     running = True
     started = False
-    cards_left = True
     finished = False
+    speed = 10
+
     current_cards = []
+    current_hands = [[], [], [], []]
     hands = [[], [], [], []]
+    last_lost = False
     card_index = 0
     turn_number = 1
+    back = Card(0, 'data/cards/cards_set_1/back.png')
 
-    suits = {'0' : 'Крести' , '1': 'Бубны' , '2':'Черви' , '3': 'Пики'}
+    card_sprites = {}
 
-    last_suit = None
+
+    for i in deck:
+        sprite_card = Card(640,  f"data/cards/cards_set_{deck_number}/{i}.png")
+        sprite_card.rect = sprite.image.get_rect()
+        card_sprites[i] = sprite_card
 
 
     while running:
         SCREEN.fill((0, 0, 0))
-        SCREEN.blit(BG_game, (0, 0))
+        SCREEN.blit(BG_menu, (0, 0))
 
         if not started:
             text_surface = font.render("Нажмите ENTER, чтобы начать", True, (255, 255, 255))
-            text_rect = text_surface.get_rect(center=(700, 500))
+            text_rect = text_surface.get_rect(center=(700, 600))
             SCREEN.blit(text_surface, text_rect)
 
-        if started or finished:
+        if True:
             text_surface = font.render(f"Ход игрока номер:{turn_number}", True, (255, 255, 255))
             text_rect = text_surface.get_rect(center=(1000, 30))
             SCREEN.blit(text_surface, text_rect)
 
-            text_surface = font.render(f"Последняя Масть: {suits[last_suit]}", True, (255, 255, 255))
-            text_rect = text_surface.get_rect(center=(1000, 70))
-            SCREEN.blit(text_surface, text_rect)
-
             text_surface = font.render(f"Осталось Карт: {36 - card_index}", True, (255, 255, 255))
-            text_rect = text_surface.get_rect(center=(1000, 110))
+            text_rect = text_surface.get_rect(center=(1000, 70))
             SCREEN.blit(text_surface, text_rect)
 
             text_surface = font.render(f"Игрок номер 2", True, (255, 255, 255))
@@ -128,6 +138,20 @@ def nauru_game(SCREEN):
             SCREEN.blit(text_surface, text_rect)
 
 
+        if last_lost and not finished:
+            text_surface = font.render(f"Игрок номер {turn_number} забирает карты", True, (255, 255, 255))
+            text_rect = text_surface.get_rect(center=(640, 10))
+            SCREEN.blit(text_surface, text_rect)
+
+        if finished:
+            if finished:
+                global winner_num
+                text_surface = font.render(f"Победил игрок номер {winner_num}!", True,
+                                           (255, 255, 255))
+                text_rect = text_surface.get_rect(center=(640, 10))
+                SCREEN.blit(text_surface, text_rect)
+
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -143,57 +167,80 @@ def nauru_game(SCREEN):
                 if event.key == pygame.K_ESCAPE:
                     running = False
                 if event.key == pygame.K_RETURN:
+                    current_hands = [[], [], [], []]
+                    hands = [[], [], [], []]
+                    current_cards.clear()
+                    turn_number = 1
+                    deck = create_deck()
+                    last_lost = False
                     started = True
-                    deck_button.change_image(f'data/cards/cards_set_{deck_number}/{deck[card_index]}.png')
-                    last_suit = deck[card_index].split('_')[0]
-                    card_index += 1
+                    finished = False
 
             if event.type == pygame.USEREVENT and event.button == back_button:
                 running = False
 
             if event.type == pygame.USEREVENT and event.button == deck_button:
-
                 if started:
 
-                    if cards_left:
-                        deck_button.change_image(f'data/cards/cards_set_{deck_number}/{deck[card_index]}.png')
-                        last_suit = deck[card_index].split('_')[0]
+                    if last_lost:
+                        current_hands = [[], [], [], []]
+                        turn_number += 1
+                        if turn_number == 5:
+                            turn_number = 1
+                        last_lost = False
+                    else:
+                        card_index += 1
+
+                        if card_index == 36:
+
+                            winner_list = min(hands, key=lambda x: len(x))
+                            winner_num = hands.index(winner_list) + 1
+                            if winner_num == 1:
+                                with open('data/stat.txt', 'r') as fin:
+                                    wins = int(fin.read().split('wins:')[1]) + 1
+                                with open('data/stat.txt', 'w') as fout:
+                                    fout.write(f'wins:{wins}')
+
+
+
+                            finished = True
+
+                            started = False
+
+                            SCREEN.blit(text_surface, text_rect)
+
+                            card_index = 0
+
                         if current_cards:
                             if deck[card_index].split('_')[0] == current_cards[-1].split('_')[0]:
                                 for i in current_cards:
                                     hands[turn_number - 1].append(i)
-                                print(hands)
+
+
+
+                                current_hands[turn_number - 1].append(deck[card_index])
+                                for i in current_hands[turn_number - 1]:
+                                    hands[turn_number - 1].append(i)
+
+                                last_lost = True
+
                                 current_cards.clear()
-                                card_index += 1
+
+                            else:
+                                current_hands[turn_number - 1].append(deck[card_index])
+                                current_cards.append(deck[card_index])
+
                                 turn_number += 1
                                 if turn_number == 5:
                                     turn_number = 1
 
-                            else:
-                                current_cards.append(deck[card_index])
-                                card_index += 1
-                                turn_number += 1
-                                if turn_number == 5:
-                                    turn_number = 1
                         else:
+                            current_hands[turn_number - 1].append(deck[card_index])
                             current_cards.append(deck[card_index])
-                            card_index += 1
+
                             turn_number += 1
                             if turn_number == 5:
                                 turn_number = 1
-
-
-                    if card_index == 36:
-                        winner = min(hands, key=lambda x: len(x))
-                        print(f'Победил игрок номер: {hands.index(winner) + 1}')
-
-                        hands = [[], [], [], []]
-                        started = False
-                        deck_button.change_image(f'data/cards/cards_set_1/back.png')
-                        turn_number = 1
-                        deck = create_deck()
-                        finished = True
-                        card_index = 0
 
 
             for btn in [back_button, deck_button]:
@@ -202,6 +249,46 @@ def nauru_game(SCREEN):
             btn.checking_hover(pygame.mouse.get_pos())
             btn.draw(SCREEN)
 
+
         if flag:
             all_sprites.draw(SCREEN)
+        SCREEN.blit(back.image, (125, 250))
+        SCREEN.blit(back.image, (575, 170))
+        SCREEN.blit(back.image, (975, 250))
+        if started or finished:
+
+            x_1 = 100
+
+            if current_hands[0] or hands[0]:
+                for i in current_hands[0]:
+                   SCREEN.blit(card_sprites[i].image, (x_1, 500))
+                   x_1 += 50
+                for i in hands[0]:
+                    if i not in current_hands[0]:
+                       SCREEN.blit(card_sprites[i].image, (x_1, 500))
+                       x_1 += 50
+
+            x_2 = 200
+
+            if current_hands[1]:
+                for i in current_hands[1]:
+                   SCREEN.blit(card_sprites[i].image, (x_2, 250))
+                   x_2 += 50
+
+            x_3 = 600
+
+            if current_hands[2]:
+                for i in current_hands[2]:
+                   SCREEN.blit(card_sprites[i].image, (x_3, 170))
+                   x_3 += 50
+
+            x_4 = 1000
+
+            if current_hands[3]:
+                for i in current_hands[3]:
+                   SCREEN.blit(card_sprites[i].image, (x_4, 250))
+                   x_4 += 50
+
         pygame.display.flip()
+
+

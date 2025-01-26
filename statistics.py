@@ -1,7 +1,7 @@
 import pygame
 from main_menu_buttons import Button
 import sys, os
-from cursor import all_sprites, sprite
+from sprite_classes import all_sprites, sprite
 
 
 pygame.init()
@@ -11,13 +11,24 @@ BG_game = pygame.image.load("data/BG/BG_game.jpg")
 font = pygame.font.Font('data/fonts/Verdana.ttf', 24)
 
 
+
+
+
+
+
+
+
 pygame.mouse.set_visible(False)
 
 
 def statisctis_screen(SCREEN):
     flag = True
 
+    with open('data/stat.txt', 'r+') as fin:
 
+        stat = fin.read()
+
+    wins = stat.split('wins:')[1]
 
 
     back_button = Button((515, 600), 250, 100, "Назад", font,
@@ -33,6 +44,11 @@ def statisctis_screen(SCREEN):
         text_surface = font.render("Статистика курочки", True, (255, 255, 255))
         text_rect = text_surface.get_rect(center=(720 / 2, 30))
         SCREEN.blit(text_surface, text_rect)
+
+        text_surface = font.render(f"Побед:{wins}", True, (255, 255, 255))
+        text_rect = text_surface.get_rect(center=(720 / 2, 70))
+        SCREEN.blit(text_surface, text_rect)
+
         text_surface_type = font.render(f"Статистика Футбольчика", True, (255, 255, 255))
         text_rect_type = text_surface_type.get_rect(center=(200, 100))
         SCREEN.blit(text_surface_type, text_rect_type)

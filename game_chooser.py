@@ -1,7 +1,7 @@
 import pygame
 from main_menu_buttons import Button
 import sys, os
-from cursor import all_sprites, sprite
+from sprite_classes import all_sprites, sprite
 from GOOOOL import football_game
 from Nauru import nauru_game
 
@@ -41,12 +41,32 @@ def game_chooser(SCREEN):
         SCREEN.blit(BG_game, (0, 0))
 
         rules_nauru = font.render("Выберите игру", True, (255, 255, 255))
-        text_rect = rules_nauru.get_rect(center=(360, 30))
+        text_rect = rules_nauru.get_rect(center=(640, 30))
         SCREEN.blit(rules_nauru, text_rect)
 
-        rules_nauru = font.render("ПРАВИЛА КУРОЧКИ", True, (255, 255, 255))
-        text_rect = rules_nauru.get_rect(center=(300, 500))
+        rules_nauru = font.render("Игроки по очереди тянут карты;", True, (255, 255, 255))
+        text_rect = rules_nauru.get_rect(center=(315, 500))
         SCREEN.blit(rules_nauru, text_rect)
+        rules_nauru = font.render("забирает все карты с рук соперников. ",
+        True, (255, 255, 255))
+        text_rect = rules_nauru.get_rect(center=(315, 560))
+        SCREEN.blit(rules_nauru, text_rect)
+        rules_nauru = font.render("тот, кто угадал масть последней карты,",
+                                  True, (255, 255, 255))
+        text_rect = rules_nauru.get_rect(center=(315, 530))
+        SCREEN.blit(rules_nauru, text_rect)
+
+
+        rules_nauru = font.render("Побеждает игрок с наименьшим",
+                                  True, (255, 255, 255))
+        text_rect = rules_nauru.get_rect(center=(315, 590))
+        SCREEN.blit(rules_nauru, text_rect)
+
+        rules_nauru = font.render("кол-вом карт.",
+                                  True, (255, 255, 255))
+        text_rect = rules_nauru.get_rect(center=(315, 620))
+        SCREEN.blit(rules_nauru, text_rect)
+
         rules_football = font.render(f"ПРАВИЛА ФУТБОЛЬЧИКА", True, (255, 255, 255))
         text_rect_type = rules_football.get_rect(center=(900, 500))
         SCREEN.blit(rules_football, text_rect_type)
