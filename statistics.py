@@ -28,8 +28,8 @@ def statisctis_screen(SCREEN):
 
         stat = fin.read()
 
-    wins = stat.split('wins:')[1]
-
+    wins_chicken = ''.join(stat.split(';')[0]).split(':')[1]
+    wins_blackjack = ''.join(stat.split(';')[1]).split(':')[1]
 
     back_button = Button((515, 600), 250, 100, "Назад", font,
                          "data/buttons/quit_button.png",
@@ -41,11 +41,19 @@ def statisctis_screen(SCREEN):
         SCREEN.fill((0, 0, 0))
         SCREEN.blit(BG_menu, (0, 0))
 
+        text_surface = font.render("Статистика Блекджека", True, (255, 255, 255))
+        text_rect = text_surface.get_rect(center=(800, 30))
+        SCREEN.blit(text_surface, text_rect)
+
+        text_surface = font.render(f"Побед:{wins_blackjack}", True, (255, 255, 255))
+        text_rect = text_surface.get_rect(center=(800, 70))
+        SCREEN.blit(text_surface, text_rect)
+
         text_surface = font.render("Статистика курочки", True, (255, 255, 255))
         text_rect = text_surface.get_rect(center=(720 / 2, 30))
         SCREEN.blit(text_surface, text_rect)
 
-        text_surface = font.render(f"Побед:{wins}", True, (255, 255, 255))
+        text_surface = font.render(f"Побед:{wins_chicken}", True, (255, 255, 255))
         text_rect = text_surface.get_rect(center=(720 / 2, 70))
         SCREEN.blit(text_surface, text_rect)
 

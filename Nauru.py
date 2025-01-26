@@ -151,7 +151,6 @@ def nauru_game(SCREEN):
                 text_rect = text_surface.get_rect(center=(640, 10))
                 SCREEN.blit(text_surface, text_rect)
 
-
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -196,11 +195,15 @@ def nauru_game(SCREEN):
                             winner_list = min(hands, key=lambda x: len(x))
                             winner_num = hands.index(winner_list) + 1
                             if winner_num == 1:
-                                with open('data/stat.txt', 'r') as fin:
-                                    wins = int(fin.read().split('wins:')[1]) + 1
-                                with open('data/stat.txt', 'w') as fout:
-                                    fout.write(f'wins:{wins}')
+                                with open('data/stat.txt', 'r+') as fin:
+                                    stat = fin.read()
+                                    wins_chicken = int(''.join(stat.split(';')[0]).split(':')[1]) + 1
 
+                                    wins_blackjack = ''.join(stat.split(';')[1]).split(':')[1]
+
+                                with open('data/stat.txt', 'w') as fout:
+                                    fout.write(f'wins_chicken:{wins_chicken};')
+                                    fout.write(f'wins_blackjack:{wins_blackjack};')
 
 
                             finished = True
