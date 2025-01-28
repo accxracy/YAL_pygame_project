@@ -81,3 +81,69 @@ def nauru_game(SCREEN):
         if flag:
             all_sprites.draw(SCREEN)
         pygame.display.flip()
+
+
+def nauru_rules(SCREEN):
+
+    back_button = Button((50, 50), 150, 75, "Назад",
+                         pygame.font.Font('data/fonts/Verdana.ttf', 20),
+                         "data/buttons/quit_button.png",
+                         "data/buttons/quit_button_hover.png",
+                         "data/sounds/click.wav")
+
+    flag = True
+    running = True
+
+    while running:
+        SCREEN.fill((0, 0, 0))
+        SCREEN.blit(BG_game, (0, 0))
+        rules_nauru = font.render("ПРАВИЛА КУРОЧКИ", True, (255, 255, 255))
+        text_rect = rules_nauru.get_rect(center=(640, 88))
+        SCREEN.blit(rules_nauru, text_rect)
+        text_coord = 400
+        text = ['Каждый игрок вытаскивает из общей стопки карту и кладет ее на стол',
+                'Если масти карты на столе, и карты, которую бросил игрок одинаковы,',
+                'то игрок забирает все карты на столе.',
+                'Забрав карты со стола, игрок ходит только ими, пока его рука не опустеет',
+                '',
+                '',
+                '',
+                '',
+                '']
+
+        for line in text:
+            string_rendered = font.render(line, 1, pygame.Color('white'))
+            intro_rect = string_rendered.get_rect()
+            text_coord += 10
+            intro_rect.top = text_coord
+            intro_rect.x = 10
+            text_coord += intro_rect.height
+            SCREEN.blit(string_rendered, intro_rect)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+                pygame.quit()
+                sys.exit()
+
+            if event.type == pygame.MOUSEMOTION:
+                coords = event.pos
+                flag = pygame.mouse.get_focused()
+                sprite.rect.x, sprite.rect.y = coords
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    running = False
+
+            if event.type == pygame.USEREVENT and event.button == back_button:
+                running = False
+
+            for btn in [back_button]:
+                btn.han_event(event)
+        for btn in [back_button]:
+            btn.checking_hover(pygame.mouse.get_pos())
+            btn.draw(SCREEN)
+
+        if flag:
+            all_sprites.draw(SCREEN)
+        pygame.display.flip()

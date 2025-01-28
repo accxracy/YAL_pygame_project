@@ -1,7 +1,7 @@
 import pygame, sys, os
 from main_menu_buttons import Button
 from GOOOOL import football_game
-from Nauru import nauru_game
+from Nauru import nauru_game, nauru_rules
 from cursor import sprite, all_sprites
 from authors import authors
 
@@ -53,8 +53,6 @@ def main_menu():
                          "data/buttons/button_authors.png",
                          "data/buttons/button_authors_hover.png",
                          "data/sounds/click.wav")
-
-
 
     running = True
     while running:
@@ -198,6 +196,12 @@ def game():
                          "data/buttons/play_button.png",
                          "data/buttons/play_button_hover.png",
                          "data/sounds/click.wav")
+    
+    nauru_rules_button = Button((200, 400), 250, 100, "Правила курочки", font,
+                          "data/buttons/option_button.png",
+                          "data/buttons/option_button_hover.png",
+                          "data/sounds/click.wav")
+    
     football_button = Button((800, 300), 250, 100, "Футбольчик", pygame.font.Font('data/fonts/Verdana.ttf', 20),
                           "data/buttons/play_button.png",
                           "data/buttons/play_button_hover.png",
@@ -214,12 +218,12 @@ def game():
         text_rect = rules_nauru.get_rect(center=(WIDTH / 2, 30))
         SCREEN.blit(rules_nauru, text_rect)
 
-        rules_nauru = font.render("ПРАВИЛА КУРОЧКИ", True, (255, 255, 255))
-        text_rect = rules_nauru.get_rect(center=(300, 500))
-        SCREEN.blit(rules_nauru, text_rect)
-        rules_football = font.render(f"ПРАВИЛА ФУТБОЛЬЧИКА", True, (255, 255, 255))
-        text_rect_type = rules_football.get_rect(center=(900, 500))
-        SCREEN.blit(rules_football, text_rect_type)
+        # rules_nauru = font.render("ПРАВИЛА КУРОЧКИ", True, (255, 255, 255))
+        # text_rect = rules_nauru.get_rect(center=(300, 500))
+        # SCREEN.blit(rules_nauru, text_rect)
+        # rules_football = font.render(f"ПРАВИЛА ФУТБОЛЬЧИКА", True, (255, 255, 255))
+        # text_rect_type = rules_football.get_rect(center=(900, 500))
+        # SCREEN.blit(rules_football, text_rect_type)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -236,7 +240,6 @@ def game():
                 if event.key == pygame.K_ESCAPE:
                     running = False
 
-
             if event.type == pygame.USEREVENT and event.button == back_button:
                 running = False
 
@@ -246,9 +249,12 @@ def game():
             if event.type == pygame.USEREVENT and event.button == football_button:
                 football_game(SCREEN)
 
-            for btn in [back_button, football_button, nauru_button]:
+            if event.type == pygame.USEREVENT and event.button == nauru_rules_button:
+                nauru_rules(SCREEN)
+
+            for btn in [back_button, football_button, nauru_button, nauru_rules_button]:
                 btn.han_event(event)
-        for btn in [back_button, football_button, nauru_button]:
+        for btn in [back_button, football_button, nauru_button, nauru_rules_button]:
             btn.checking_hover(pygame.mouse.get_pos())
             btn.draw(SCREEN)
 
