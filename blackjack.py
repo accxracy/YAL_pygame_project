@@ -76,13 +76,6 @@ def finish_game(score_player, score_bot):
 
 
 
-
-
-
-
-
-
-
 def blackjack_game(SCREEN):
 
     with open('data/settings/settings.ini', 'r+') as fin:
