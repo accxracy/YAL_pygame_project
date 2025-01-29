@@ -75,14 +75,6 @@ def finish_game(score_player, score_bot):
         return 'Выйграл пользователь'
 
 
-
-
-
-
-
-
-
-
 def blackjack_game(SCREEN):
 
     with open('data/settings/settings.ini', 'r+') as fin:
@@ -274,16 +266,11 @@ def blackjack_game(SCREEN):
                         else:
                             player_score += score
 
-                        if player_score == 21:
+                        if player_score >= 21:
                             ending = finish_game(player_score, bot_score)
                             buttons.insert(0, start_button)
                             finished = True
-
-
-                        if player_score > 21:
-                            ending = finish_game(player_score, bot_score)
-                            buttons.insert(0, start_button)
-                            finished = True
+                            stop_player = True
 
 
                     card_index += 1
