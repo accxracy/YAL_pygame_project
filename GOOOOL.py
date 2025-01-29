@@ -1,10 +1,9 @@
 import pygame
 from main_menu_buttons import Button
 import sys, os
-from cursor import all_sprites, sprite
+from sprite_classes import all_sprites, sprite
 
 pygame.init()
-
 
 def load_image(name, colorkey=None):
     fullname = os.path.join('data', name)
@@ -38,7 +37,6 @@ def football_game(SCREEN):
                                        "data/buttons/quit_button.png",
                                        "data/buttons/quit_button_hover.png",
                                        "data/sounds/click.wav")
-    
 
     while running:
         SCREEN.fill((0, 0, 0))
