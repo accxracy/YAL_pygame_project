@@ -178,7 +178,9 @@ def nauru_game(SCREEN):
             if event.type == pygame.USEREVENT and event.button == back_button:
                 running = False
 
-            if event.type == pygame.USEREVENT and event.button == deck_button:
+            if ((event.type == pygame.USEREVENT and event.button == deck_button) or
+                    (event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE)):
+
                 if started:
 
                     if last_lost:
@@ -252,24 +254,23 @@ def nauru_game(SCREEN):
             btn.checking_hover(pygame.mouse.get_pos())
             btn.draw(SCREEN)
 
-
-        if flag:
-            all_sprites.draw(SCREEN)
         SCREEN.blit(back.image, (125, 250))
         SCREEN.blit(back.image, (575, 170))
         SCREEN.blit(back.image, (975, 250))
-        if started or finished:
+        if started:
 
             x_1 = 100
+            y_1 = 500
 
             if current_hands[0] or hands[0]:
                 for i in current_hands[0]:
-                   SCREEN.blit(card_sprites[i].image, (x_1, 500))
-                   x_1 += 50
+
+                    SCREEN.blit(card_sprites[i].image, (x_1, y_1))
+                    x_1 += 50
                 for i in hands[0]:
                     if i not in current_hands[0]:
-                       SCREEN.blit(card_sprites[i].image, (x_1, 500))
-                       x_1 += 50
+                        SCREEN.blit(card_sprites[i].image, (x_1, y_1))
+                        x_1 += 50
 
             x_2 = 200
 
@@ -291,6 +292,9 @@ def nauru_game(SCREEN):
                 for i in current_hands[3]:
                    SCREEN.blit(card_sprites[i].image, (x_4, 250))
                    x_4 += 50
+
+        if flag:
+            all_sprites.draw(SCREEN)
 
         pygame.display.flip()
 
