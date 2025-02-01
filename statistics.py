@@ -14,10 +14,6 @@ font = pygame.font.Font('data/fonts/Verdana.ttf', 24)
 
 
 
-
-
-
-
 pygame.mouse.set_visible(False)
 
 
@@ -42,23 +38,27 @@ def statisctis_screen(SCREEN):
         SCREEN.blit(BG_menu, (0, 0))
 
         text_surface = font.render("Статистика Блекджека", True, (255, 255, 255))
-        text_rect = text_surface.get_rect(center=(800, 30))
+        text_rect = text_surface.get_rect(center=(700, 30))
         SCREEN.blit(text_surface, text_rect)
 
         text_surface = font.render(f"Побед:{wins_blackjack}", True, (255, 255, 255))
-        text_rect = text_surface.get_rect(center=(800, 70))
+        text_rect = text_surface.get_rect(center=(700, 70))
         SCREEN.blit(text_surface, text_rect)
 
         text_surface = font.render("Статистика курочки", True, (255, 255, 255))
-        text_rect = text_surface.get_rect(center=(720 / 2, 30))
+        text_rect = text_surface.get_rect(center=(200, 30))
         SCREEN.blit(text_surface, text_rect)
 
         text_surface = font.render(f"Побед:{wins_chicken}", True, (255, 255, 255))
-        text_rect = text_surface.get_rect(center=(720 / 2, 70))
+        text_rect = text_surface.get_rect(center=(200, 70))
         SCREEN.blit(text_surface, text_rect)
 
         text_surface_type = font.render(f"Статистика Футбольчика", True, (255, 255, 255))
-        text_rect_type = text_surface_type.get_rect(center=(200, 100))
+        text_rect_type = text_surface_type.get_rect(center=(1100, 30))
+        SCREEN.blit(text_surface_type, text_rect_type)
+
+        text_surface_type = font.render(f"Побед:", True, (255, 255, 255))
+        text_rect_type = text_surface_type.get_rect(center=(1100, 70))
         SCREEN.blit(text_surface_type, text_rect_type)
 
         for event in pygame.event.get():
