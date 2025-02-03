@@ -36,6 +36,7 @@ BG_menu = pygame.image.load("data/BG/BG_menu.jpg")
 BG_game = pygame.image.load("data/BG/BG_menu.jpg")
 font = pygame.font.Font('data/fonts/Verdana.ttf', 24)
 
+
 def main_menu():
     pygame.mixer.music.load("data/sounds/Jaz_Z.mp3")
     pygame.mixer.music.play(-1)
@@ -102,8 +103,6 @@ def main_menu():
 
             if event.type == pygame.USEREVENT and event.button == statistic_button:
                 statisctis_screen(SCREEN)
-
-
 
             if event.type == pygame.USEREVENT and event.button == quit_button:
                 running = False
