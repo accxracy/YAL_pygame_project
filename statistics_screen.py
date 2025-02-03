@@ -6,9 +6,9 @@ from sprite_classes import all_sprites, sprite
 
 pygame.init()
 
-BG_menu = pygame.image.load("data/BG/BG_menu.jpg")
-BG_game = pygame.image.load("data/BG/BG_game.jpg")
-font = pygame.font.Font('data/fonts/Verdana.ttf', 24)
+BG_menu = pygame.image.load("././data/BG/BG_menu.jpg")
+BG_game = pygame.image.load("././data/BG/BG_game.jpg")
+font = pygame.font.Font('././data/fonts/Verdana.ttf', 24)
 
 
 
@@ -20,7 +20,7 @@ pygame.mouse.set_visible(False)
 def statisctis_screen(SCREEN):
     flag = True
 
-    with open('data/stat.txt', 'r+') as fin:
+    with open('././data/stat.txt', 'r+') as fin:
 
         stat = fin.read()
 
@@ -28,9 +28,9 @@ def statisctis_screen(SCREEN):
     wins_blackjack = ''.join(stat.split(';')[1]).split(':')[1]
 
     back_button = Button((515, 600), 250, 100, "Назад", font,
-                         "data/buttons/quit_button.png",
-                         "data/buttons/quit_button_hover.png",
-                         "data/sounds/click.wav")
+                         "././data/buttons/quit_button.png",
+                         "././data/buttons/quit_button_hover.png",
+                         "././data/sounds/click.wav")
 
     running = True
     while running:

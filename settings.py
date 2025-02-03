@@ -6,9 +6,9 @@ from sprite_classes import all_sprites, sprite
 
 pygame.init()
 
-BG_menu = pygame.image.load("data/BG/BG_menu.jpg")
-BG_game = pygame.image.load("data/BG/BG_game.jpg")
-font = pygame.font.Font('data/fonts/Verdana.ttf', 24)
+BG_menu = pygame.image.load("./data/BG/BG_menu.jpg")
+BG_game = pygame.image.load("./data/BG/BG_game.jpg")
+font = pygame.font.Font('./data/fonts/Verdana.ttf', 24)
 
 
 pygame.mouse.set_visible(False)
@@ -17,7 +17,7 @@ pygame.mouse.set_visible(False)
 def settings_menu(SCREEN):
     flag = True
 
-    with open('data/settings/settings.ini', 'r+') as fin:
+    with open('./data/settings/settings.ini', 'r+') as fin:
         settings = fin.read()
 
 
@@ -25,21 +25,21 @@ def settings_menu(SCREEN):
 
 
     back_button = Button((600, 600), 250, 100, "Назад", font,
-                         "data/buttons/quit_button.png",
-                         "data/buttons/quit_button_hover.png",
-                         "data/sounds/click.wav")
+                         "./data/buttons/quit_button.png",
+                         "./data/buttons/quit_button_hover.png",
+                         "./data/sounds/click.wav")
     deck1_button = Button((10, 300), 200, 200, None, font,
-                          "data/buttons/full_1.png",
-                          "data/buttons/full_1_hover.png",
-                          "data/sounds/click.wav")
+                          "./data/buttons/full_1.png",
+                          "./data/buttons/full_1_hover.png",
+                          "./data/sounds/click.wav")
     deck2_button = Button((300, 300), 200, 200, None, font,
-                          "data/buttons/full_2.png",
-                          "data/buttons/full_2_hover.png",
-                          "data/sounds/click.wav")
+                          "./data/buttons/full_2.png",
+                          "./data/buttons/full_2_hover.png",
+                          "./data/sounds/click.wav")
     apply_button = Button((300, 600), 250, 100, 'Применить', font,
-                          "data/buttons/option_button.png",
-                          "data/buttons/option_button_hover.png",
-                          "data/sounds/click.wav")
+                          "./data/buttons/option_button.png",
+                          "./data/buttons/option_button_hover.png",
+                          "./data/sounds/click.wav")
     running = True
     while running:
         SCREEN.fill((0, 0, 0))
@@ -77,7 +77,7 @@ def settings_menu(SCREEN):
                 deck_number = 2
 
             if event.type == pygame.USEREVENT and event.button == apply_button:
-                with open('data/settings/settings.ini', 'w') as fout:
+                with open('./data/settings/settings.ini', 'w') as fout:
                     fout.write(f'deck_type={deck_number}')
 
             for btn in [back_button, deck1_button, deck2_button, apply_button]:

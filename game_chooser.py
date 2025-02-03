@@ -9,9 +9,9 @@ from blackjack import blackjack_game
 
 pygame.init()
 
-BG_menu = pygame.image.load("data/BG/BG_menu.jpg")
-BG_game = pygame.image.load("data/BG/BG_game.jpg")
-font = pygame.font.Font('data/fonts/Verdana.ttf', 24)
+BG_menu = pygame.image.load("./data/BG/BG_menu.jpg")
+BG_game = pygame.image.load("./data/BG/BG_game.jpg")
+font = pygame.font.Font('./data/fonts/Verdana.ttf', 24)
 
 
 pygame.mouse.set_visible(False)
@@ -20,24 +20,24 @@ pygame.mouse.set_visible(False)
 def game_chooser(SCREEN):
 
     flag = True
-    back_button = Button((50, 50), 150, 75, "Назад", pygame.font.Font('data/fonts/Verdana.ttf', 20),
-                         "data/buttons/quit_button.png",
-                         "data/buttons/quit_button_hover.png",
-                         "data/sounds/click.wav")
+    back_button = Button((50, 50), 150, 75, "Назад", pygame.font.Font('./data/fonts/Verdana.ttf', 20),
+                         "./data/buttons/quit_button.png",
+                         "./data/buttons/quit_button_hover.png",
+                         "./data/sounds/click.wav")
 
-    nauru_button = Button((200, 300), 250, 100, "Курочка", pygame.font.Font('data/fonts/Verdana.ttf', 20),
-                         "data/buttons/play_button.png",
-                         "data/buttons/play_button_hover.png",
-                         "data/sounds/click.wav")
-    football_button = Button((800, 300), 250, 100, "Футбольчик", pygame.font.Font('data/fonts/Verdana.ttf', 20),
-                          "data/buttons/play_button.png",
-                          "data/buttons/play_button_hover.png",
-                          "data/sounds/click.wav")
+    nauru_button = Button((200, 300), 250, 100, "Курочка", pygame.font.Font('./data/fonts/Verdana.ttf', 20),
+                         "./data/buttons/play_button.png",
+                         "./data/buttons/play_button_hover.png",
+                         "./data/sounds/click.wav")
+    football_button = Button((800, 300), 250, 100, "Футбольчик", pygame.font.Font('./data/fonts/Verdana.ttf', 20),
+                          "./data/buttons/play_button.png",
+                          "./data/buttons/play_button_hover.png",
+                          "./data/sounds/click.wav")
 
-    blackjack_button = Button((515, 100), 250, 100, "Блекджек", pygame.font.Font('data/fonts/Verdana.ttf', 20),
-                             "data/buttons/play_button.png",
-                             "data/buttons/play_button_hover.png",
-                             "data/sounds/click.wav")
+    blackjack_button = Button((515, 100), 250, 100, "Блекджек", pygame.font.Font('./data/fonts/Verdana.ttf', 20),
+                             "./data/buttons/play_button.png",
+                             "./data/buttons/play_button_hover.png",
+                             "./data/sounds/click.wav")
 
     running = True
 
