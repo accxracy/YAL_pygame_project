@@ -11,25 +11,25 @@ pygame.display.set_caption("Карточные игры)")
 deck_number = 1
 
 
-BG_menu = pygame.image.load("data/BG/BG_plot.jpg")
-font = pygame.font.Font('data/fonts/Verdana.ttf', 24)
+BG_menu = pygame.image.load("./data/BG/BG_plot.jpg")
+font = pygame.font.Font('./data/fonts/Verdana.ttf', 24)
 
 
 def start_game():
-    pygame.mixer.music.load("data/sounds/Jaz_Z.mp3")
+    pygame.mixer.music.load("./data/sounds/Jaz_Z.mp3")
     pygame.mixer.music.play(-1)
     vol = 0.01
     pygame.mixer.music.set_volume(vol)
     flag = True
     exit_button = Button((1000, 50), 150, 150, None, font,
-                             "data/buttons/exit_button.jpg",
-                             "data/buttons/exit_button.jpg",
-                             "data/sounds/click.wav")
+                             "./data/buttons/exit_button.jpg",
+                             "./data/buttons/exit_button.jpg",
+                             "./data/sounds/click.wav")
 
     play_button = Button((80, 15), 300, 250, None, font,
-                          "data/buttons/full_1.png",
-                          "data/buttons/full_1_hover.png",
-                          "data/sounds/click.wav")
+                          "./data/buttons/full_1.png",
+                          "./data/buttons/full_1_hover.png",
+                          "./data/sounds/click.wav")
 
     running = True
     while running:
