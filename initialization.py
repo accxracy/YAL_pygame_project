@@ -4,7 +4,7 @@ from sprite_classes import sprite, all_sprites
 from authors import authors
 from settings import settings_menu
 from game_chooser import game_chooser
-from statistics import statisctis_screen
+from statistics_screen import statisctis_screen
 
 
 pygame.init()
