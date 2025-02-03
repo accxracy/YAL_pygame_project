@@ -46,7 +46,7 @@ def settings_menu(SCREEN):
         SCREEN.blit(BG_menu, (0, 0))
 
         text_surface = font.render("Настройки", True, (255, 255, 255))
-        text_rect = text_surface.get_rect(center=(720 / 2, 30))
+        text_rect = text_surface.get_rect(center=(600, 30))
         SCREEN.blit(text_surface, text_rect)
         text_surface_type = font.render(f"тип колоды: {deck_number}", True, (255, 255, 255))
         text_rect_type = text_surface_type.get_rect(center=(200, 100))

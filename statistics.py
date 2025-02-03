@@ -42,23 +42,27 @@ def statisctis_screen(SCREEN):
         SCREEN.blit(BG_menu, (0, 0))
 
         text_surface = font.render("Статистика Блекджека", True, (255, 255, 255))
-        text_rect = text_surface.get_rect(center=(800, 30))
+        text_rect = text_surface.get_rect(center=(300, 30))
         SCREEN.blit(text_surface, text_rect)
 
         text_surface = font.render(f"Побед:{wins_blackjack}", True, (255, 255, 255))
-        text_rect = text_surface.get_rect(center=(800, 70))
+        text_rect = text_surface.get_rect(center=(300, 70))
         SCREEN.blit(text_surface, text_rect)
 
         text_surface = font.render("Статистика курочки", True, (255, 255, 255))
-        text_rect = text_surface.get_rect(center=(720 / 2, 30))
+        text_rect = text_surface.get_rect(center=(600, 30))
         SCREEN.blit(text_surface, text_rect)
 
         text_surface = font.render(f"Побед:{wins_chicken}", True, (255, 255, 255))
-        text_rect = text_surface.get_rect(center=(720 / 2, 70))
+        text_rect = text_surface.get_rect(center=(600, 70))
         SCREEN.blit(text_surface, text_rect)
 
         text_surface_type = font.render(f"Статистика Футбольчика", True, (255, 255, 255))
-        text_rect_type = text_surface_type.get_rect(center=(200, 100))
+        text_rect_type = text_surface_type.get_rect(center=(1000, 30))
+        SCREEN.blit(text_surface_type, text_rect_type)
+
+        text_surface_type = font.render(f"-", True, (255, 255, 255))
+        text_rect_type = text_surface_type.get_rect(center=(1000, 70))
         SCREEN.blit(text_surface_type, text_rect_type)
 
         for event in pygame.event.get():
