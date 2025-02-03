@@ -1,1 +1,1 @@
-wins_chicken:1;wins_blackjack:6;
+wins_chicken:3;wins_blackjack:15;

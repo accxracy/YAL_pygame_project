@@ -10,14 +10,6 @@ BG_menu = pygame.image.load("data/BG/BG_menu.jpg")
 BG_game = pygame.image.load("data/BG/BG_game.jpg")
 font = pygame.font.Font('data/fonts/Verdana.ttf', 24)
 
-
-
-
-
-
-
-
-
 pygame.mouse.set_visible(False)
 
 
@@ -79,8 +71,6 @@ def statisctis_screen(SCREEN):
 
             if event.type == pygame.USEREVENT and event.button == back_button:
                 running = False
-
-
 
             for btn in [back_button]:
                 btn.han_event(event)

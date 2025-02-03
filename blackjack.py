@@ -43,7 +43,9 @@ def stat_writer():
         fout.write(f'wins_chicken:{wins_chicken};')
         fout.write(f'wins_blackjack:{wins_blackjack};')
 
+
 back = Card(0, "data/cards/cards_set_1/back.png")
+
 
 def finish_game(score_player, score_bot):
     if score_player > 21 and score_bot > 21:
@@ -73,7 +75,6 @@ def finish_game(score_player, score_bot):
     elif score_player == 21:
         stat_writer()
         return 'Выйграл пользователь'
-
 
 
 def blackjack_game(SCREEN):
@@ -113,7 +114,6 @@ def blackjack_game(SCREEN):
 
     ending = ''
 
-
     add_button = Button((800, 500), 150, 75, "Еще", pygame.font.Font('data/fonts/Verdana.ttf', 20),
                          "data/buttons/statistics_button.png",
                          "data/buttons/statistics_hover_button.png",
@@ -140,10 +140,7 @@ def blackjack_game(SCREEN):
                          "data/buttons/quit_button_hover.png",
                          "data/sounds/click.wav")
 
-
     buttons = [start_button, stop_button, add_button, next_step, back_button]
-
-
 
     while running:
 
@@ -151,8 +148,6 @@ def blackjack_game(SCREEN):
         SCREEN.blit(BG_menu, (0, 0))
 
         SCREEN.blit(back.image, (640, 250))
-
-
 
         text_surface = font.render(f"Ваш Счет:{player_score}", True, (255, 255, 255))
         text_rect = text_surface.get_rect(center=(500, 600))
@@ -174,8 +169,6 @@ def blackjack_game(SCREEN):
             text_surface = font.render(f"Исход: {ending}", True, (255, 255, 255))
             text_rect = text_surface.get_rect(center=(1000, 100))
             SCREEN.blit(text_surface, text_rect)
-
-
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -253,7 +246,6 @@ def blackjack_game(SCREEN):
                     bot_score += score
                 card_index += 1
 
-
             if event.type == pygame.USEREVENT and event.button == add_button:
                 if started:
                     if not stop_player:
@@ -278,15 +270,12 @@ def blackjack_game(SCREEN):
                             buttons.insert(0, start_button)
                             finished = True
 
-
                     card_index += 1
-
 
             if event.type == pygame.USEREVENT and event.button == stop_button:
                 if started:
                     stop_player = True
                     turn = 'Бот'
-
 
             if event.type == pygame.USEREVENT and event.button == next_step:
                 if started:
@@ -305,15 +294,12 @@ def blackjack_game(SCREEN):
                                     bot_score += score
                                 card_index += 1
 
-
                             elif step == 2:
                                 bot_choice = 'СТОП'
                                 ending = finish_game(player_score, bot_score)
                                 buttons.insert(0, start_button)
                                 finished = True
                                 bot_stop = True
-
-
                                 break
 
                             if bot_score not in range(16, 20):
@@ -333,14 +319,12 @@ def blackjack_game(SCREEN):
                             buttons.insert(0, start_button)
                             finished = True
 
-
                         elif bot_score > 21:
                             bot_choice = '-'
                             bot_stop = True
                             ending = finish_game(player_score, bot_score)
                             buttons.insert(0, start_button)
                             finished = True
-
 
                         elif bot_score < 16:
                             bot_choice = 'Еще!'
@@ -354,14 +338,14 @@ def blackjack_game(SCREEN):
                                 bot_score += score
                             card_index += 1
 
-                        elif bot_score > player_score and bot_score < 21:
+                        elif player_score < bot_score < 21:
                             bot_choice = '-'
                             bot_stop = True
                             ending = finish_game(player_score, bot_score)
                             buttons.insert(0, start_button)
                             finished = True
 
-                        elif bot_score < player_score and player_score < 21:
+                        elif bot_score < player_score < 21:
                             bot_choice = 'Еще!'
                             hands[1].append(deck[card_index])
                             score = int(deck[card_index].split('_')[1])
@@ -373,7 +357,6 @@ def blackjack_game(SCREEN):
                                 bot_score += score
                             card_index += 1
 
-
             for btn in buttons:
                 btn.han_event(event)
         for btn in buttons:
@@ -381,7 +364,7 @@ def blackjack_game(SCREEN):
             btn.draw(SCREEN)
         if started:
             x_1 = 100
-            if  hands[0] or hands[0]:
+            if hands[0] or hands[0]:
                 for i in hands[0]:
                     SCREEN.blit(card_sprites[i].image, (x_1, 500))
                     x_1 += 50
@@ -392,7 +375,6 @@ def blackjack_game(SCREEN):
                 for i in hands[1]:
                     SCREEN.blit(card_sprites[i].image, (x_2, 50))
                     x_2 += 50
-
 
         if flag:
             all_sprites.draw(SCREEN)
