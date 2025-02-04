@@ -20,7 +20,7 @@ pygame.mouse.set_visible(False)
 def statisctis_screen(SCREEN):
     flag = True
 
-    with open('data/stat.txt', 'r+') as fin:
+    with open('../data/stat.txt', 'r+') as fin:
 
         stat = fin.read()
 

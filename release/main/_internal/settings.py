@@ -17,7 +17,7 @@ pygame.mouse.set_visible(False)
 def settings_menu(SCREEN):
     flag = True
 
-    with open('data/settings/settings.ini', 'r+') as fin:
+    with open('../data/settings/settings.ini', 'r+') as fin:
         settings = fin.read()
 
 
@@ -77,7 +77,7 @@ def settings_menu(SCREEN):
                 deck_number = 2
 
             if event.type == pygame.USEREVENT and event.button == apply_button:
-                with open('data/settings/settings.ini', 'w') as fout:
+                with open('../data/settings/settings.ini', 'w') as fout:
                     fout.write(f'deck_type={deck_number}')
 
             for btn in [back_button, deck1_button, deck2_button, apply_button]:

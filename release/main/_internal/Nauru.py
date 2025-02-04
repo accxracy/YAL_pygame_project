@@ -20,7 +20,7 @@ def create_deck():
 
 
 def load_image(name, colorkey=None):
-    fullname = os.path.join('data', name)
+    fullname = os.path.join('../data', name)
     # если файл не существует, то выходим
     if not os.path.isfile(fullname):
         print(f"Файл с изображением '{fullname}' не найден")
@@ -53,7 +53,7 @@ def nauru_game(SCREEN):
 
 
 
-    with open('data/settings/settings.ini', 'r+') as fin:
+    with open('../data/settings/settings.ini', 'r+') as fin:
         settings = fin.read()
 
         deck_number = settings.split('deck_type=')[1]
@@ -84,13 +84,13 @@ def nauru_game(SCREEN):
     last_lost = False
     card_index = 0
     turn_number = 1
-    back = Card(0, 'data/cards/cards_set_1/back.png')
+    back = Card(0, '../data/cards/cards_set_1/back.png')
 
     card_sprites = {}
 
 
     for i in deck:
-        sprite_card = Card(640,  f"data/cards/cards_set_{deck_number}/{i}.png")
+        sprite_card = Card(640, f"../data/cards/cards_set_{deck_number}/{i}.png")
         sprite_card.rect = sprite.image.get_rect()
         card_sprites[i] = sprite_card
 
@@ -197,13 +197,13 @@ def nauru_game(SCREEN):
                             winner_list = min(hands, key=lambda x: len(x))
                             winner_num = hands.index(winner_list) + 1
                             if winner_num == 1:
-                                with open('data/stat.txt', 'r+') as fin:
+                                with open('../data/stat.txt', 'r+') as fin:
                                     stat = fin.read()
                                     wins_chicken = int(''.join(stat.split(';')[0]).split(':')[1]) + 1
 
                                     wins_blackjack = ''.join(stat.split(';')[1]).split(':')[1]
 
-                                with open('data/stat.txt', 'w') as fout:
+                                with open('../data/stat.txt', 'w') as fout:
                                     fout.write(f'wins_chicken:{wins_chicken};')
                                     fout.write(f'wins_blackjack:{wins_blackjack};')
 

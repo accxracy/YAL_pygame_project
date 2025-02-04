@@ -36,11 +36,6 @@ def load_image(name, colorkey=None):
     return image
 
 
-
-
-
-
-
 BG_menu = pygame.image.load("./data/BG/BG_menu.jpg")
 
 font = pygame.font.Font('./data/fonts/Verdana.ttf', 24)
@@ -50,9 +45,6 @@ pygame.mouse.set_visible(False)
 
 
 def nauru_game(SCREEN):
-
-
-
     with open('./data/settings/settings.ini', 'r+') as fin:
         settings = fin.read()
 

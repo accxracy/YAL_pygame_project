@@ -9,7 +9,7 @@ from sprite_classes import Card
 pygame.init()
 
 def load_image(name, colorkey=None):
-    fullname = os.path.join('data', name)
+    fullname = os.path.join('../data', name)
     # если файл не существует, то выходим
     if not os.path.isfile(fullname):
         print(f"Файл с изображением '{fullname}' не найден")
@@ -33,18 +33,18 @@ pygame.mouse.set_visible(False)
 
 
 def stat_writer():
-    with open('data/stat.txt', 'r+') as fin:
+    with open('../data/stat.txt', 'r+') as fin:
         stat = fin.read()
         wins_chicken = ''.join(stat.split(';')[0]).split(':')[1]
 
         wins_blackjack = int(''.join(stat.split(';')[1]).split(':')[1]) + 1
 
-    with open('data/stat.txt', 'w') as fout:
+    with open('../data/stat.txt', 'w') as fout:
         fout.write(f'wins_chicken:{wins_chicken};')
         fout.write(f'wins_blackjack:{wins_blackjack};')
 
 
-back = Card(0, "data/cards/cards_set_1/back.png")
+back = Card(0, "../data/cards/cards_set_1/back.png")
 
 
 def finish_game(score_player, score_bot):
@@ -79,7 +79,7 @@ def finish_game(score_player, score_bot):
 
 def blackjack_game(SCREEN):
 
-    with open('data/settings/settings.ini', 'r+') as fin:
+    with open('../data/settings/settings.ini', 'r+') as fin:
         settings = fin.read()
 
         deck_number = settings.split('deck_type=')[1]
@@ -93,7 +93,7 @@ def blackjack_game(SCREEN):
     card_sprites = {}
     deck = create_deck()
     for i in deck:
-        sprite_card = Card(640, f"data/cards/cards_set_{deck_number}/{i}.png")
+        sprite_card = Card(640, f"../data/cards/cards_set_{deck_number}/{i}.png")
         sprite_card.rect = sprite.image.get_rect()
         card_sprites[i] = sprite_card
 

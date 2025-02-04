@@ -8,8 +8,6 @@ pygame.init()
 WIDTH, HEIGHT = 1280, 720
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Карточные игры)")
-deck_number = 1
-
 
 BG_menu = pygame.image.load("./data/BG/BG_plot.jpg")
 font = pygame.font.Font('./data/fonts/Verdana.ttf', 24)
@@ -21,15 +19,27 @@ def start_game():
     vol = 0.01
     pygame.mixer.music.set_volume(vol)
     flag = True
+
+    with open('./data/settings/settings.ini', 'r+') as fin:
+        settings = fin.read()
+
+        deck_number = settings.split('deck_type=')[1]
     exit_button = Button((1000, 50), 150, 150, None, font,
                              "./data/buttons/exit_button.jpg",
                              "./data/buttons/exit_button.jpg",
                              "./data/sounds/click.wav")
 
-    play_button = Button((80, 15), 300, 250, None, font,
-                          "./data/buttons/full_1.png",
-                          "./data/buttons/full_1_hover.png",
-                          "./data/sounds/click.wav")
+    if deck_number == "2":
+        play_button = Button((80, 15), 300, 250, None, font,
+                             "./data/buttons/full_2.png",
+                             "./data/buttons/full_2_hover.png",
+                             "./data/sounds/click.wav")
+    else:
+        play_button = Button((80, 15), 300, 250, None, font,
+                              "./data/buttons/full_1.png",
+                              "./data/buttons/full_1_hover.png",
+                              "./data/sounds/click.wav")
+
 
     running = True
     while running:
