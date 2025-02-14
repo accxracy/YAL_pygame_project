@@ -2,7 +2,6 @@ import pygame
 from main_menu_buttons import Button
 import sys, os
 from sprite_classes import all_sprites, sprite
-from GOOOOL import football_game
 from Nauru import nauru_game
 from blackjack import blackjack_game
 
@@ -31,7 +30,7 @@ def game_chooser(SCREEN):
                          "./data/sounds/click.wav")
 
 
-    blackjack_button = Button((515, 100), 250, 100, "Блекджек", pygame.font.Font('./data/fonts/Verdana.ttf', 20),
+    blackjack_button = Button((600, 300), 250, 100, "Блекджек", pygame.font.Font('./data/fonts/Verdana.ttf', 20),
                              "./data/buttons/play_button.png",
                              "./data/buttons/play_button_hover.png",
                              "./data/sounds/click.wav")
@@ -43,13 +42,6 @@ def game_chooser(SCREEN):
         SCREEN.fill((0, 0, 0))
         SCREEN.blit(BG_game, (0, 0))
 
-        rules_nauru = font.render("Мейнстрим:", True, (255, 255, 255))
-        text_rect = rules_nauru.get_rect(center=(640, 30))
-        SCREEN.blit(rules_nauru, text_rect)
-
-        rules_nauru = font.render("Авторские игры:", True, (255, 255, 255))
-        text_rect = rules_nauru.get_rect(center=(640, 270))
-        SCREEN.blit(rules_nauru, text_rect)
 
         rules_nauru = font.render("Игроки по очереди тянут карты;", True, (255, 255, 255))
         text_rect = rules_nauru.get_rect(center=(315, 500))
@@ -73,9 +65,12 @@ def game_chooser(SCREEN):
         text_rect = rules_nauru.get_rect(center=(315, 620))
         SCREEN.blit(rules_nauru, text_rect)
 
-        rules_football = font.render(f"ПРАВИЛА ФУТБОЛЬЧИКА", True, (255, 255, 255))
-        text_rect_type = rules_football.get_rect(center=(900, 500))
-        SCREEN.blit(rules_football, text_rect_type)
+        rules_bj = font.render("все знают правила",
+                                  True, (255, 255, 255))
+        text_rect = rules_bj .get_rect(center=(750, 500))
+        SCREEN.blit(rules_bj , text_rect)
+
+
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:

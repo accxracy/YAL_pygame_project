@@ -46,9 +46,9 @@ pygame.mouse.set_visible(False)
 
 def nauru_game(SCREEN):
     with open('./data/settings/settings.ini', 'r+') as fin:
-        settings = fin.read()
+        settings = fin.read().split('\n')
 
-        deck_number = settings.split('deck_type=')[1]
+        deck_number = settings[0].split('deck_type=')[1]
 
 
     back_button = Button((50, 50), 150, 75, "Выйти",

@@ -4,6 +4,7 @@ from sprite_classes import all_sprites, sprite
 from initialization import main_menu
 
 
+
 pygame.init()
 WIDTH, HEIGHT = 1280, 720
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -13,17 +14,20 @@ BG_menu = pygame.image.load("./data/BG/BG_plot.jpg")
 font = pygame.font.Font('./data/fonts/Verdana.ttf', 24)
 
 
+
 def start_game():
     pygame.mixer.music.load("./data/sounds/Jaz_Z.mp3")
     pygame.mixer.music.play(-1)
     vol = 0.01
     pygame.mixer.music.set_volume(vol)
+
+
     flag = True
 
     with open('./data/settings/settings.ini', 'r+') as fin:
         settings = fin.read()
 
-        deck_number = settings.split('deck_type=')[1]
+    deck_number = settings.split('deck_type=')[1]
     exit_button = Button((1000, 50), 150, 150, None, font,
                              "./data/buttons/exit_button.jpg",
                              "./data/buttons/exit_button.jpg",

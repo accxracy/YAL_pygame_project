@@ -80,9 +80,9 @@ def finish_game(score_player, score_bot):
 def blackjack_game(SCREEN):
 
     with open('./././data/settings/settings.ini', 'r+') as fin:
-        settings = fin.read()
+        settings = fin.read().split('\n')
 
-        deck_number = settings.split('deck_type=')[1]
+        deck_number = settings[0].split('deck_type=')[1]
 
     flag = True
     running = True

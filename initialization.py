@@ -16,7 +16,6 @@ deck_number = 1
 
 def load_image(name, colorkey=None):
     fullname = os.path.join('./data', name)
-    # если файл не существует, то выходим
     if not os.path.isfile(fullname):
         print(f"Файл с изображением '{fullname}' не найден")
         sys.exit()
@@ -30,6 +29,14 @@ def load_image(name, colorkey=None):
         image = image.convert_alpha()
     return image
 
+def conv(str):
+    if str == 'False':
+        return False
+    elif str == 'True':
+        return True
+    else:
+        return str
+
 pygame.mouse.set_visible(False)
 
 BG_menu = pygame.image.load("./data/BG/BG_menu.jpg")
@@ -38,30 +45,26 @@ font = pygame.font.Font('./data/fonts/Verdana.ttf', 24)
 
 
 def main_menu():
-    pygame.mixer.music.load("./data/sounds/Jaz_Z.mp3")
-    pygame.mixer.music.play(-1)
-    vol = 0.01
-    pygame.mixer.music.set_volume(vol)
     flag = True
     settings_button = Button((515, 300), 250, 100, "Настройки", font,
                              "./data/buttons/option_button.png",
                              "./data/buttons/option_button_hover.png",
                              "./data/sounds/click.wav")
-    play_button = Button((515, 200), 250, 100, "Играть", font,
+    play_button = Button((515, 205), 250, 100, "Играть", font,
                          "./data/buttons/play_button.png",
                          "./data/buttons/play_button_hover.png",
                          "./data/sounds/click.wav")
-    quit_button = Button((515, 600), 250, 100, "Выход", font,
+    quit_button = Button((515, 597), 250, 100, "Выход", font,
                          "./data/buttons/quit_button.png",
                          "./data/buttons/quit_button_hover.png",
                          "./data/sounds/click.wav")
 
-    final_button = Button((515, 500), 250, 100, "Авторы", font,
+    final_button = Button((515, 498), 250, 100, "Авторы", font,
                          "./data/buttons/button_authors.png",
                          "./data/buttons/button_authors_hover.png",
                          "./data/sounds/click.wav")
 
-    statistic_button = Button((515, 400), 250, 100, "Статистика", font,
+    statistic_button = Button((515, 398), 250, 100, "Статистика", font,
                          "./data/buttons/statistics_button.png",
                          "./data/buttons/statistics_hover_button.png",
                          "./data/sounds/click.wav")
@@ -70,6 +73,12 @@ def main_menu():
 
     running = True
     while running:
+        with open('./data/settings/settings.ini', 'r+') as fin:
+            settings = fin.read().split('\n')
+
+
+
+
         SCREEN.blit(BG_menu, (0, 0))
 
         text_surface_title = font.render('Карточные игры)', True, (255, 255, 255))

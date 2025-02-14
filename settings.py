@@ -4,6 +4,8 @@ import sys, os
 from sprite_classes import all_sprites, sprite
 
 
+
+
 pygame.init()
 
 BG_menu = pygame.image.load("./data/BG/BG_menu.jpg")
@@ -13,26 +15,27 @@ font = pygame.font.Font('./data/fonts/Verdana.ttf', 24)
 
 pygame.mouse.set_visible(False)
 
-
 def settings_menu(SCREEN):
+
+
     flag = True
 
     with open('./data/settings/settings.ini', 'r+') as fin:
-        settings = fin.read()
+        settings = fin.read().split('\n')
 
+    deck_number = settings[0].split('deck_type=')[1]
 
-    deck_number = settings.split('deck_type=')[1]
 
 
     back_button = Button((600, 600), 250, 100, "Назад", font,
                          "./data/buttons/quit_button.png",
                          "./data/buttons/quit_button_hover.png",
                          "./data/sounds/click.wav")
-    deck1_button = Button((10, 300), 200, 200, None, font,
+    deck1_button = Button((440, 200), 200, 200, None, font,
                           "./data/buttons/full_1.png",
                           "./data/buttons/full_1_hover.png",
                           "./data/sounds/click.wav")
-    deck2_button = Button((300, 300), 200, 200, None, font,
+    deck2_button = Button((640, 200), 200, 200, None, font,
                           "./data/buttons/full_2.png",
                           "./data/buttons/full_2_hover.png",
                           "./data/sounds/click.wav")
@@ -40,16 +43,18 @@ def settings_menu(SCREEN):
                           "./data/buttons/option_button.png",
                           "./data/buttons/option_button_hover.png",
                           "./data/sounds/click.wav")
+
+
     running = True
     while running:
         SCREEN.fill((0, 0, 0))
         SCREEN.blit(BG_menu, (0, 0))
 
         text_surface = font.render("Настройки", True, (255, 255, 255))
-        text_rect = text_surface.get_rect(center=(600, 30))
+        text_rect = text_surface.get_rect(center=(640, 30))
         SCREEN.blit(text_surface, text_rect)
         text_surface_type = font.render(f"тип колоды: {deck_number}", True, (255, 255, 255))
-        text_rect_type = text_surface_type.get_rect(center=(200, 100))
+        text_rect_type = text_surface_type.get_rect(center=(640, 100))
         SCREEN.blit(text_surface_type, text_rect_type)
 
         for event in pygame.event.get():
@@ -76,9 +81,13 @@ def settings_menu(SCREEN):
             if event.type == pygame.USEREVENT and event.button == deck2_button:
                 deck_number = 2
 
+
+
+
             if event.type == pygame.USEREVENT and event.button == apply_button:
                 with open('./data/settings/settings.ini', 'w') as fout:
-                    fout.write(f'deck_type={deck_number}')
+                    fout.write(f'deck_type={deck_number}\n')
+
 
             for btn in [back_button, deck1_button, deck2_button, apply_button]:
                 btn.han_event(event)
