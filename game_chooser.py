@@ -29,10 +29,7 @@ def game_chooser(SCREEN):
                          "./data/buttons/play_button.png",
                          "./data/buttons/play_button_hover.png",
                          "./data/sounds/click.wav")
-    football_button = Button((800, 300), 250, 100, "Футбольчик", pygame.font.Font('./data/fonts/Verdana.ttf', 20),
-                          "./data/buttons/play_button.png",
-                          "./data/buttons/play_button_hover.png",
-                          "./data/sounds/click.wav")
+
 
     blackjack_button = Button((515, 100), 250, 100, "Блекджек", pygame.font.Font('./data/fonts/Verdana.ttf', 20),
                              "./data/buttons/play_button.png",
@@ -65,7 +62,6 @@ def game_chooser(SCREEN):
                                   True, (255, 255, 255))
         text_rect = rules_nauru.get_rect(center=(315, 530))
         SCREEN.blit(rules_nauru, text_rect)
-
 
         rules_nauru = font.render("Побеждает игрок с наименьшим",
                                   True, (255, 255, 255))
@@ -106,12 +102,11 @@ def game_chooser(SCREEN):
             if event.type == pygame.USEREVENT and event.button == blackjack_button:
                 blackjack_game(SCREEN)
 
-            if event.type == pygame.USEREVENT and event.button == football_button:
-                football_game(SCREEN)
 
-            for btn in [back_button, football_button, nauru_button, blackjack_button]:
+
+            for btn in [back_button, nauru_button, blackjack_button]:
                 btn.han_event(event)
-        for btn in [back_button, football_button, nauru_button, blackjack_button]:
+        for btn in [back_button, nauru_button, blackjack_button]:
             btn.checking_hover(pygame.mouse.get_pos())
             btn.draw(SCREEN)
 
