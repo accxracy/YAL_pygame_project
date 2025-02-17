@@ -9,7 +9,7 @@ from sprite_classes import Card
 pygame.init()
 
 def load_image(name, colorkey=None):
-    fullname = os.path.join('../data', name)
+    fullname = os.path.join('././data', name)
     # если файл не существует, то выходим
     if not os.path.isfile(fullname):
         print(f"Файл с изображением '{fullname}' не найден")
@@ -24,27 +24,27 @@ def load_image(name, colorkey=None):
         image = image.convert_alpha()
     return image
 
-BG_menu = pygame.image.load("data/BG/BG_menu.jpg")
+BG_menu = pygame.image.load("./././data/BG/BG_menu.jpg")
 
-font = pygame.font.Font('data/fonts/Verdana.ttf', 24)
+font = pygame.font.Font('./././data/fonts/Verdana.ttf', 24)
 
 
 pygame.mouse.set_visible(False)
 
 
 def stat_writer():
-    with open('../data/stat.txt', 'r+') as fin:
+    with open('./././data/stat.txt', 'r+') as fin:
         stat = fin.read()
         wins_chicken = ''.join(stat.split(';')[0]).split(':')[1]
 
         wins_blackjack = int(''.join(stat.split(';')[1]).split(':')[1]) + 1
 
-    with open('../data/stat.txt', 'w') as fout:
+    with open('./././data/stat.txt', 'w') as fout:
         fout.write(f'wins_chicken:{wins_chicken};')
         fout.write(f'wins_blackjack:{wins_blackjack};')
 
 
-back = Card(0, "../data/cards/cards_set_1/back.png")
+back = Card(0, "./././data/cards/cards_set_1/back.png")
 
 
 def finish_game(score_player, score_bot):
@@ -79,10 +79,10 @@ def finish_game(score_player, score_bot):
 
 def blackjack_game(SCREEN):
 
-    with open('../data/settings/settings.ini', 'r+') as fin:
-        settings = fin.read()
+    with open('./././data/settings/settings.ini', 'r+') as fin:
+        settings = fin.read().split('\n')
 
-        deck_number = settings.split('deck_type=')[1]
+        deck_number = settings[0].split('deck_type=')[1]
 
     flag = True
     running = True
@@ -93,7 +93,7 @@ def blackjack_game(SCREEN):
     card_sprites = {}
     deck = create_deck()
     for i in deck:
-        sprite_card = Card(640, f"../data/cards/cards_set_{deck_number}/{i}.png")
+        sprite_card = Card(640, f"./././data/cards/cards_set_{deck_number}/{i}.png")
         sprite_card.rect = sprite.image.get_rect()
         card_sprites[i] = sprite_card
 
@@ -114,31 +114,31 @@ def blackjack_game(SCREEN):
 
     ending = ''
 
-    add_button = Button((800, 500), 150, 75, "Еще", pygame.font.Font('data/fonts/Verdana.ttf', 20),
-                         "data/buttons/statistics_button.png",
-                         "data/buttons/statistics_hover_button.png",
-                         sound='data/sounds/card_sound.mp3')
+    add_button = Button((800, 500), 150, 75, "Еще", pygame.font.Font('./././data/fonts/Verdana.ttf', 20),
+                         "./././data/buttons/statistics_button.png",
+                         "./././data/buttons/statistics_hover_button.png",
+                         sound='./././data/sounds/card_sound.mp3')
 
-    stop_button = Button((800, 400), 150, 75, "Стоп", pygame.font.Font('data/fonts/Verdana.ttf', 20),
-                         "data/buttons/statistics_button.png",
-                         "data/buttons/statistics_hover_button.png",
-                         "data/sounds/click.wav")
+    stop_button = Button((800, 400), 150, 75, "Стоп", pygame.font.Font('./././data/fonts/Verdana.ttf', 20),
+                         "./././data/buttons/statistics_button.png",
+                         "./././data/buttons/statistics_hover_button.png",
+                         "./././data/sounds/click.wav")
 
-    start_button = Button((800, 600), 150, 75, "Начать", pygame.font.Font('data/fonts/Verdana.ttf', 20),
-                             "data/buttons/play_button.png",
-                             "data/buttons/play_button_hover.png",
-                             "data/sounds/click.wav")
+    start_button = Button((800, 600), 150, 75, "Начать", pygame.font.Font('./././data/fonts/Verdana.ttf', 20),
+                             "./././data/buttons/play_button.png",
+                             "./././data/buttons/play_button_hover.png",
+                             "./././data/sounds/click.wav")
 
-    next_step = Button((800, 300), 150, 75, "Ход!", pygame.font.Font('data/fonts/Verdana.ttf', 20),
-                         "data/buttons/statistics_button.png",
-                         "data/buttons/statistics_hover_button.png",
-                         sound='data/sounds/card_sound.mp3')
+    next_step = Button((800, 300), 150, 75, "Ход!", pygame.font.Font('./././data/fonts/Verdana.ttf', 20),
+                         "././data/buttons/statistics_button.png",
+                         "././data/buttons/statistics_hover_button.png",
+                         sound='././data/sounds/card_sound.mp3')
 
     back_button = Button((1100, 600), 150, 75, "Выйти",
-                         pygame.font.Font('data/fonts/Verdana.ttf', 20),
-                         "data/buttons/quit_button.png",
-                         "data/buttons/quit_button_hover.png",
-                         "data/sounds/click.wav")
+                         pygame.font.Font('././data/fonts/Verdana.ttf', 20),
+                         "././data/buttons/quit_button.png",
+                         "././data/buttons/quit_button_hover.png",
+                         "././data/sounds/click.wav")
 
     buttons = [start_button, stop_button, add_button, next_step, back_button]
 
